@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fuentes de acceso a la información psicológica</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFEBDF;
+    --card:#F6F3EA;
+    --ink:#1F2A3C;
+    --muted:#8B8574;
+    --rule:rgba(31,42,60,.14);
+    --gold:#B8862B;
+    --gold-soft:#E4C77A;
+    --green:#3F6B57;
+    --red:#A63D40;
+    --font-display:'Fraunces',serif;
+    --font-body:'IBM Plex Sans',sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{background:var(--paper);}
+  .reveal{font-family:var(--font-body);color:var(--ink);}
+  .reveal .slides section{
+    text-align:left;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .reveal .slides{text-align:left;}
+  .reveal h1,.reveal h2,.reveal h3{font-family:var(--font-display);font-weight:600;margin:0 0 .4em 0;line-height:1.08;}
+  .reveal p{margin:.3em 0;line-height:1.5;}
+  .reveal ::selection{background:var(--gold-soft);color:var(--ink);}
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    font-size:.72rem;
+    color:var(--muted);
+  }
+
+  .card{
+    width:100%;
+    max-width:1020px;
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:2.6rem 3.2rem;
+    box-shadow:0 1px 0 var(--rule);
+    background-image:repeating-linear-gradient(to bottom, transparent, transparent 2.3rem, var(--rule) 2.3rem, var(--rule) calc(2.3rem + 1px));
+  }
+  .card.tight{padding:2.2rem 2.8rem;}
+
+  /* ---------- title ---------- */
+  .title-slide .card{text-align:left;}
+  .title-slide h1{font-size:clamp(2.3rem,5vw,3.6rem);}
+  .title-slide .sub{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(1.1rem,2.2vw,1.5rem);color:var(--muted);margin-top:.2em;}
+  .title-slide .meta{margin-top:1.6rem;font-family:var(--font-mono);font-size:.85rem;color:var(--muted);}
+
+  /* ---------- quote / simple ---------- */
+  .quote-slide .card{text-align:left;}
+  .quote-slide blockquote{
+    font-family:var(--font-display);
+    font-size:clamp(1.4rem,3vw,2.1rem);
+    font-style:italic;
+    margin:.6em 0 0 0;
+    line-height:1.3;
+  }
+  .quote-slide blockquote::before{content:"“";color:var(--gold);}
+  .quote-slide blockquote::after{content:"”";color:var(--gold);}
+
+  /* ---------- apertura list ---------- */
+  .tag-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem;}
+  .tag{
+    font-family:var(--font-mono);
+    font-size:.85rem;
+    border:1px solid var(--rule);
+    border-radius:999px;
+    padding:.35em .9em;
+    color:var(--ink);
+    background:var(--paper);
+  }
+
+  /* ---------- fuente card ---------- */
+  .fuente-slide .card{display:flex;flex-direction:column;gap:1rem;}
+  .fuente-slide .num{font-family:var(--font-mono);color:var(--muted);letter-spacing:.08em;font-size:.85rem;}
+  .fuente-slide h2{font-size:clamp(1.6rem,3.4vw,2.3rem);}
+  .pros-cons{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:.6rem;}
+  .pros-cons .block{flex:1;min-width:230px;}
+  .stamp{
+    display:inline-block;
+    border:2px solid currentColor;
+    border-radius:3px;
+    padding:.32em .75em;
+    font-family:var(--font-mono);
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    font-size:.75rem;
+    font-weight:600;
+    transform:rotate(-2deg);
+    margin-bottom:.6rem;
+  }
+  .stamp.green{color:var(--green);}
+  .stamp.red{color:var(--red);}
+  .stamp.gold{color:var(--gold);}
+  .pros-cons p{font-size:1.05rem;}
+  .teaser{margin-top:.4rem;font-family:var(--font-mono);font-size:.78rem;color:var(--gold);}
+
+  /* ---------- panorama (bar list) ---------- */
+  .panorama .card{max-width:1080px;}
+  .bar-row{display:flex;align-items:center;gap:1rem;margin:.55rem 0;}
+  .bar-label{width:230px;flex:0 0 230px;font-size:.95rem;}
+  .bar-track{flex:1;height:.6rem;background:var(--rule);border-radius:999px;position:relative;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:var(--muted);}
+  .bar-row.star .bar-label{font-weight:600;color:var(--gold);}
+  .bar-row.star .bar-fill{background:linear-gradient(90deg,var(--gold-soft),var(--gold));}
+  .axis-caption{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.72rem;color:var(--muted);margin-top:.8rem;}
+
+  /* ---------- star / seal ---------- */
+  .star-slide .card{background:var(--card);text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.2rem;background-image:none;}
+  .seal{
+    width:170px;height:170px;border-radius:50%;
+    border:3px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    color:var(--gold);
+    font-family:var(--font-mono);
+    letter-spacing:.08em;
+    box-shadow:0 0 0 6px var(--paper), 0 0 0 7px var(--gold-soft);
+  }
+  .seal::before{
+    content:"";position:absolute;inset:10px;border:1px dashed var(--gold);border-radius:50%;
+  }
+  .seal span{font-size:2.4rem;}
+  .star-slide h2{font-size:clamp(2rem,4.4vw,3rem);}
+
+  /* ---------- IMRaD ---------- */
+  .imrad-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.4rem;align-items:stretch;}
+  .imrad-box{
+    flex:1;min-width:140px;
+    border:1px solid var(--rule);border-radius:6px;
+    padding:1.2rem .8rem;text-align:center;background:var(--paper);
+  }
+  .imrad-box .letter{font-family:var(--font-display);font-size:2.1rem;color:var(--gold);}
+  .imrad-box .label{font-family:var(--font-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem;}
+  .imrad-arrow{display:flex;align-items:center;font-size:1.4rem;color:var(--muted);}
+
+  /* ---------- checklist ---------- */
+  .checklist{list-style:none;margin:1.2rem 0 0 0;padding:0;}
+  .checklist li{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.85rem;font-size:1.12rem;}
+  .checklist li::before{
+    content:"";flex:0 0 20px;width:20px;height:20px;margin-top:.15rem;
+    border:2px solid var(--ink);border-radius:3px;
+  }
+
+  /* ---------- activity ---------- */
+  .pasos{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:1.2rem;}
+  .paso{flex:1;min-width:260px;border:1px solid var(--rule);border-radius:6px;padding:1.4rem 1.5rem;background:var(--paper);}
+  .paso .badge{
+    display:inline-block;background:var(--gold-soft);color:var(--ink);
+    font-family:var(--font-mono);font-size:.72rem;letter-spacing:.05em;
+    padding:.25em .7em;border-radius:999px;margin-bottom:.7rem;
+  }
+  .paso h3{font-size:1.25rem;}
+  .prompt-box{
+    margin-top:1rem;border-left:3px solid var(--gold);padding-left:.9rem;
+    font-family:var(--font-display);font-style:italic;font-size:1.15rem;color:var(--ink);
+  }
+
+  /* ---------- contrast ---------- */
+  .contrast{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1.2rem;}
+  .contrast .col{flex:1;min-width:260px;border-radius:6px;padding:1.3rem 1.4rem;}
+  .contrast .tema{background:var(--paper);border:1px solid var(--rule);}
+  .contrast .pregunta{background:#FBF4E1;border:1px solid var(--gold-soft);}
+  .contrast .eyebrow.gold{color:var(--gold);}
+  .contrast p{font-size:1.15rem;margin-top:.5rem;}
+
+  /* ---------- generic simple slide ---------- */
+  .simple-slide .card{text-align:left;}
+  .simple-slide ul{margin-top:1rem;padding-left:1.1rem;}
+  .simple-slide li{font-size:1.15rem;margin-bottom:.6rem;line-height:1.5;}
+
+  /* reveal chrome */
+  .reveal .controls{color:var(--ink);}
+  .reveal .progress{color:var(--gold);height:4px;}
+  .reveal .slide-number{
+    font-family:var(--font-mono);background:transparent;color:var(--muted);font-size:.8rem;
+  }
+
+  a:focus-visible, button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+    .stamp{transform:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- 0: TITLE -->
+    <section class="title-slide">
+      <div class="card">
+        <p class="eyebrow">Ficha de cátedra — materia taller</p>
+        <h1>Fuentes de acceso a la información psicológica</h1>
+        <p class="sub">De la búsqueda cotidiana al artículo científico</p>
+        <p class="meta">Hacia la construcción del plan de tesis</p>
+      </div>
+    </section>
+
+    <!-- 1: APERTURA -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Momento 1 · Apertura</p>
+        <h2>¿Dónde buscaron primero?</h2>
+        <p>La última vez que quisieron saber algo de psicología —ansiedad, apego, un test, lo que sea— ¿a qué recurrieron?</p>
+        <div class="tag-row">
+          <span class="tag fragment">Instagram / TikTok</span>
+          <span class="tag fragment">Una IA generativa</span>
+          <span class="tag fragment">Wikipedia</span>
+          <span class="tag fragment">Un conocido psicólogo</span>
+          <span class="tag fragment">Google, en general</span>
+          <span class="tag fragment">Un libro de cátedra</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2: ENCUADRE -->
+    <section class="quote-slide">
+      <div class="card">
+        <p class="eyebrow">Encuadre</p>
+        <blockquote>Hoy vamos a ordenar ese mapa: qué tan confiable es cada una de esas fuentes, y por qué, cuando arman un plan de tesis, hay una que es la fuente estrella.</blockquote>
+      </div>
+    </section>
+
+    <!-- 3: MOMENTO 2 INTRO -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Momento 2 · Recorrido teórico</p>
+        <h2>Nueve tipos de fuentes</h2>
+        <p>De menor a mayor rigurosidad. Para cada una: qué es, una ventaja, una desventaja.</p>
+      </div>
+    </section>
+
+    <!-- FUENTES 1-9 -->
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">01 / 09</p>
+        <h2>Redes sociales / influencers de psicología</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Accesibles, actualizadas, bajan conceptos a lenguaje cotidiano.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Autoría muchas veces anónima o sin formación verificable, sin revisión previa, prioridad al engagement por sobre la precisión.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">02 / 09</p>
+        <h2>IA generativa sin verificar</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Rápida para explorar un tema o resumir bibliografía ya conocida.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Puede inventar referencias o mezclar estudios; no reemplaza ir a la fuente original.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">03 / 09</p>
+        <h2>Notas de divulgación / medios masivos</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Traducen investigación a lenguaje general, a veces citan el estudio original.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Simplifican, priorizan el titular llamativo, filtro editorial no académico.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">04 / 09</p>
+        <h2>Wikipedia</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Buen punto de partida, suele citar fuentes.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Editable por cualquiera, calidad de las citas variable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">05 / 09</p>
+        <h2>Libros de texto / manuales de cátedra</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Especialista con formación reconocida, síntesis ordenada de un campo.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Se desactualiza rápido, refleja una escuela teórica particular.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">06 / 09</p>
+        <h2>Sitios institucionales (OMS, APA, Ministerio de Salud)</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Autoridad reconocida, información contrastada.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Puede reflejar una agenda institucional, formato poco técnico para una tesis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">07 / 09</p>
+        <h2>Tesis y TFG de otros estudiantes</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Modelo cercano de cómo se estructura un trabajo similar al propio.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Calidad heterogénea, revisión académica pero no por pares externos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">08 / 09</p>
+        <h2>Revisiones sistemáticas / meta-análisis</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp green">Ventaja</div>
+            <p>Sintetizan muchos estudios primarios con método explícito, revisión por pares.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Dependen de cuándo se hizo la búsqueda; pueden quedar desactualizadas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fuente-slide">
+      <div class="card">
+        <p class="num">09 / 09</p>
+        <h2>Artículo científico original (empírico)</h2>
+        <div class="pros-cons">
+          <div class="block">
+            <div class="stamp gold">Ventaja</div>
+            <p>Autoría identificable, revisión por pares, método y datos explicitados y en principio trazables.</p>
+          </div>
+          <div class="block">
+            <div class="stamp red">Desventaja</div>
+            <p>Lenguaje técnico, acceso a veces pago, requiere entrenamiento para leerlo críticamente.</p>
+          </div>
+        </div>
+        <p class="teaser">★ seguimos profundizando en esta — es la fuente estrella</p>
+      </div>
+    </section>
+
+    <!-- PANORAMA -->
+    <section class="panorama">
+      <div class="card tight">
+        <p class="eyebrow">Panorama general</p>
+        <h2 style="font-size:1.7rem;">De menor a mayor rigurosidad</h2>
+        <div class="bar-row"><div class="bar-label">Redes sociales / influencers</div><div class="bar-track"><div class="bar-fill" style="width:12%;"></div></div></div>
+        <div class="bar-row"><div class="bar-label">IA generativa sin verificar</div><div class="bar-track"><div class="bar-fill" style="width:20%;"></div></div></div>
+        <div class="bar-row"><div class="bar-label">Notas de divulgación</div><div class="bar-track"><div class="bar-fill" style="width:32%;"></div></div></div>
+        <div class="bar-row"><div class="bar-label">Wikipedia</div><div class="bar-track"><div class="bar-fill" style="width:42%;"></div></div></div>
+        <div class="bar-row"><div class="bar-label">Libros de texto / manuales</div><div class="bar-track"><div class="bar-fill" style="width:55%;"></div></div></div>
+        <div class="bar-row"><div class="bar-label">Sitios institucionales</div><div class="bar-track"><div class="bar-fill" style="width:65%;"></div></div></div>
+        <div class="bar-row"><div class="bar-label">Tesis / TFG de otros</div><div class="bar-track"><div class="bar-fill" style="width:75%;"></div></div></div>
+        <div class="bar-row"><div class="bar-label">Revisión sistemática / meta-análisis</div><div class="bar-track"><div class="bar-fill" style="width:88%;"></div></div></div>
+        <div class="bar-row star"><div class="bar-label">★ Artículo científico original</div><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div></div>
+        <div class="axis-caption"><span>menos trazable</span><span>más trazable y riguroso</span></div>
+      </div>
+    </section>
+
+    <!-- STAR TRANSITION -->
+    <section class="star-slide">
+      <div class="card">
+        <div class="seal"><span>★</span></div>
+        <p class="eyebrow">Momento 3</p>
+        <h2>La fuente estrella</h2>
+        <p style="max-width:640px;">Revisión por pares, autoría identificable, método explícito y trazable. La que van a necesitar para el estado del arte de su plan de tesis.</p>
+      </div>
+    </section>
+
+    <!-- IMRAD -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Estructura del artículo</p>
+        <h2>IMRaD</h2>
+        <div class="imrad-row">
+          <div class="imrad-box"><div class="letter">I</div><div class="label">Introducción</div></div>
+          <div class="imrad-arrow">→</div>
+          <div class="imrad-box"><div class="letter">M</div><div class="label">Método</div></div>
+          <div class="imrad-arrow">→</div>
+          <div class="imrad-box"><div class="letter">R</div><div class="label">Resultados</div></div>
+          <div class="imrad-arrow">→</div>
+          <div class="imrad-box"><div class="letter">D</div><div class="label">Discusión</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIPOS DE ARTICULO -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Primaria vs. secundaria</p>
+        <h2>No todos los artículos son iguales</h2>
+        <ul>
+          <li><strong>Original / empírico</strong> — fuente primaria: reporta un estudio propio.</li>
+          <li><strong>Revisión narrativa</strong> — sintetiza literatura sin método sistemático explícito.</li>
+          <li><strong>Revisión sistemática / meta-análisis</strong> — fuente secundaria: sintetiza estudios primarios con método explícito.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CRITERIOS -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Chequeo rápido</p>
+        <h2>Cómo reconocer un buen artículo</h2>
+        <ul class="checklist">
+          <li>Revista indexada</li>
+          <li>Revisión por pares</li>
+          <li>Afiliación institucional de los autores</li>
+          <li>DOI</li>
+          <li>Método explicitado y replicable</li>
+          <li>Fecha razonable para el estado del campo</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- DATOS ABIERTOS -->
+    <section class="quote-slide">
+      <div class="card">
+        <p class="eyebrow">Un plus, no un requisito excluyente</p>
+        <blockquote>Cada vez se valora más si el estudio declaró datos y materiales abiertos, o si fue preregistrado — señal extra de transparencia.</blockquote>
+      </div>
+    </section>
+
+    <!-- ACTIVIDAD -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Momento 4 · Actividad</p>
+        <h2>Encontrar la pregunta de investigación</h2>
+        <div class="pasos">
+          <div class="paso">
+            <span class="badge">15 min · individual</span>
+            <h3>Paso 1 — Leer y escribir</h3>
+            <p>Resumen + introducción del artículo asignado. Una sola oración:</p>
+            <div class="prompt-box">Este estudio busca responder&hellip;</div>
+          </div>
+          <div class="paso">
+            <span class="badge">15 min · plenario</span>
+            <h3>Paso 2 — Puesta en común</h3>
+            <p>Leer 2-3 respuestas por artículo y comparar cómo la formularon.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEMA VS PREGUNTA -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">El error más común</p>
+        <h2>Tema no es lo mismo que pregunta</h2>
+        <div class="contrast">
+          <div class="col tema">
+            <p class="eyebrow">Tema</p>
+            <p>&ldquo;Este estudio habla de ansiedad y redes sociales.&rdquo;</p>
+          </div>
+          <div class="col pregunta fragment">
+            <p class="eyebrow gold">Pregunta de investigación</p>
+            <p>&ldquo;¿El tiempo de uso de redes sociales predice síntomas de ansiedad en adolescentes?&rdquo;</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PUENTE -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Momento 5 · Puente</p>
+        <h2>Hacia el plan de tesis</h2>
+        <ul>
+          <li>El estado del arte se construye citando artículos científicos, no notas de un portal ni resúmenes de una IA.</li>
+          <li>Así como hoy identificaron la pregunta de otros, en las próximas clases van a formular la propia.</li>
+          <li>Wikipedia o una nota de divulgación sirven para orientarse al principio — no para fundamentar.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CIERRE -->
+    <section class="quote-slide">
+      <div class="card">
+        <p class="eyebrow">Cierre</p>
+        <blockquote>¿Qué fuente van a evitar citar en su plan de tesis a partir de hoy?</blockquote>
+      </div>
+    </section>
+
+    <!-- TAREA -->
+    <section class="simple-slide">
+      <div class="card">
+        <p class="eyebrow">Tarea para la próxima clase</p>
+        <h2>Su propio tema, su propia pregunta</h2>
+        <p>Buscar 2-3 artículos científicos relacionados con su tema tentativo de tesis y, para cada uno, escribir en una oración la pregunta de investigación — igual que hoy, pero con artículos elegidos por ellos.</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1200,
+    height: 750,
+    margin: 0.06,
+    minScale: 0.2,
+    maxScale: 2,
+    hash: true,
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    backgroundTransition: 'fade'
+  });
+</script>
+</body>
+</html>
