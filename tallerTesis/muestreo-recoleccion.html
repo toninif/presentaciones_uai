@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muestreo y técnicas de recolección de datos — Taller de Tesis UAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1E2433;
+    --ink-soft:#B9BFC9;
+    --muted:#5C6472;
+    --paper:#F0ECE2;
+    --card-bg:#FFFFFF;
+    --line:#DBD5C4;
+
+    --prob:#2C4870;      --prob-soft:#E4EAF1;
+    --noprob:#A9701C;    --noprob-soft:#F3E7D2;
+    --cuali:#1F6B63;     --cuali-soft:#E1EFEC;
+    --cuanti:#A9502B;    --cuanti-soft:#F3E3D9;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0; font-weight:600; color:var(--ink);}
+
+  /* ---------- stage ---------- */
+  .stage-outer{position:fixed; inset:0; overflow:hidden;}
+  .stage{
+    position:absolute; width:1280px; height:720px;
+    background:var(--paper);
+    overflow:hidden;
+    transform-origin:center center;
+  }
+
+  .slide{
+    position:absolute; inset:0;
+    padding:60px 84px 44px;
+    display:flex; flex-direction:column;
+    opacity:0; pointer-events:none;
+    transition:opacity .28s ease;
+  }
+  .slide.active{opacity:1; pointer-events:auto; z-index:2;}
+  @media (prefers-reduced-motion:reduce){ .slide{transition:none;} }
+
+  .kicker{
+    display:flex; align-items:center; gap:9px;
+    font-size:15px; color:var(--muted); font-weight:500;
+    margin-bottom:14px;
+  }
+  .kicker-dot{width:8px; height:8px; border-radius:50%; background:var(--dot,var(--ink));}
+
+  .slide-title{font-size:44px; line-height:1.12; letter-spacing:-.01em; margin-bottom:6px;}
+  .slide-subtitle{font-size:19px; color:var(--muted); max-width:640px; line-height:1.45; margin-bottom:8px;}
+
+  .slide-body{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center;}
+
+  /* ---------- text lists ---------- */
+  .deflist{display:flex; flex-direction:column; gap:16px; max-width:620px;}
+  .deflist .term{font-family:'Fraunces', serif; font-weight:600; font-size:19px; margin-bottom:3px;}
+  .deflist .desc{font-size:16.5px; line-height:1.48; color:var(--ink);}
+
+  /* ---------- cards ---------- */
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent,var(--ink));
+    border-radius:6px;
+    padding:22px 24px;
+  }
+  .card h3{font-size:21px; color:var(--accent,var(--ink)); margin-bottom:12px;}
+  .card ul{list-style:none; margin:0; padding:0;}
+  .card li{position:relative; padding-left:17px; margin-bottom:8px; font-size:15.5px; line-height:1.44; color:var(--ink);}
+  .card li:last-child{margin-bottom:0;}
+  .card li::before{content:"–"; position:absolute; left:0; color:var(--accent,var(--muted));}
+
+  .chip{
+    display:inline-block; align-self:flex-start;
+    padding:6px 14px; border-radius:4px;
+    background:var(--accent-soft,#eee); color:var(--accent,var(--ink));
+    font-weight:600; font-size:15px; margin-bottom:14px;
+  }
+
+  /* ---------- comparison columns ---------- */
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:34px;}
+  .compare .col{display:flex; flex-direction:column;}
+  .compare ul{list-style:none; margin:0; padding:0;}
+  .compare li{position:relative; padding-left:18px; margin-bottom:12px; font-size:16px; line-height:1.46; color:var(--ink);}
+  .compare li::before{content:"–"; position:absolute; left:0; color:var(--accent,var(--muted));}
+
+  /* ---------- numbered reflection list ---------- */
+  .steps{display:flex; flex-direction:column; gap:16px; max-width:680px;}
+  .step{display:flex; gap:16px; align-items:flex-start;}
+  .step-num{
+    font-family:'Fraunces', serif; font-weight:600; font-size:19px;
+    color:var(--card-bg); background:var(--ink);
+    width:32px; height:32px; min-width:32px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .step p{margin:0; font-size:17px; line-height:1.5; padding-top:3px;}
+
+  /* ---------- cover ---------- */
+  .cover .slide-body{display:grid; grid-template-columns:1.05fr .95fr; align-items:center; gap:30px;}
+  .cover-byline{margin-top:26px; font-size:16px; color:var(--muted);}
+  .cover-byline strong{color:var(--ink); font-weight:600;}
+  .dotfield-wrap{display:flex; align-items:center; justify-content:center;}
+  .dotfield-wrap svg{width:100%; height:auto; max-width:460px;}
+  svg text{font-family:'Public Sans', sans-serif; fill:var(--muted);}
+
+  /* ---------- divider ---------- */
+  .slide.divider{
+    background:var(--ink); justify-content:center;
+    background-image:radial-gradient(rgba(240,236,226,.16) 1.6px, transparent 1.6px);
+    background-size:30px 30px;
+  }
+  .divider .divider-inner{max-width:760px;}
+  .divider .eyebrow{font-size:18px; color:var(--ink-soft); margin-bottom:10px; font-weight:500;}
+  .divider h2{font-size:54px; color:var(--paper); line-height:1.1; margin-bottom:14px;}
+  .divider p{font-size:19px; color:var(--ink-soft); line-height:1.5; max-width:520px;}
+  .duo-bar{display:flex; height:6px; width:220px; border-radius:3px; overflow:hidden; margin-top:26px;}
+  .duo-bar span{flex:1;}
+
+  /* ---------- footer note on final slides ---------- */
+  .end-note{margin-top:auto; font-size:14px; color:var(--muted); border-top:1px solid var(--line); padding-top:16px;}
+
+  /* ---------- navbar ---------- */
+  .progress-track{position:fixed; top:0; left:0; right:0; height:3px; background:rgba(255,255,255,.08); z-index:10;}
+  .progress-fill{height:100%; width:0%; background:var(--paper); transition:width .25s ease;}
+  @media (prefers-reduced-motion:reduce){ .progress-fill{transition:none;} }
+
+  .navbar{
+    position:fixed; left:0; right:0; bottom:0; height:52px; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 22px; gap:16px;
+    border-top:1px solid rgba(255,255,255,.08);
+    background:var(--ink);
+    font-size:14px; color:var(--ink-soft);
+  }
+  .navbar .hint{white-space:nowrap;}
+  @media (max-width:680px){ .navbar .hint{display:none;} }
+
+  .dots{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; max-width:50vw;}
+  .dot{
+    width:7px; height:7px; border-radius:50%; padding:0; border:none;
+    background:rgba(255,255,255,.25); cursor:pointer;
+  }
+  .dot.active{background:var(--paper); width:9px; height:9px;}
+
+  .navbar-right{display:flex; align-items:center; gap:12px;}
+  .counter{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .navbtn{
+    width:32px; height:32px; border-radius:50%; border:1px solid rgba(255,255,255,.25);
+    background:transparent; color:var(--paper); font-size:17px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; line-height:1;
+  }
+  .navbtn:hover{background:rgba(255,255,255,.1);}
+
+  button:focus-visible, .dot:focus-visible{outline:2px solid var(--paper); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="stage-outer">
+  <div class="stage" id="stage">
+
+    <!-- 1. COVER -->
+    <section class="slide active" data-title="Portada">
+      <div class="slide-body cover">
+        <div>
+          <div class="kicker" style="--dot:var(--prob)">Taller de Tesis · UAI</div>
+          <h1 class="slide-title" style="font-size:56px;">Muestreo y recolección de datos</h1>
+          <p class="slide-subtitle" style="font-size:21px;">Decisiones metodológicas para tu proyecto de tesis: a quién vas a estudiar y cómo vas a obtener la información.</p>
+          <div class="cover-byline"><strong>Dr. Fernando Tonini</strong> · Taller de Tesis</div>
+        </div>
+        <div class="dotfield-wrap"><svg id="coverField" viewBox="0 0 528 336"></svg></div>
+      </div>
+    </section>
+
+    <!-- 2. AGENDA -->
+    <section class="slide" data-title="Agenda">
+      <div class="kicker" style="--dot:var(--ink)">Recorrido de hoy</div>
+      <h2 class="slide-title">Dos preguntas = Dos decisiones</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="--accent:var(--prob); --accent-soft:var(--prob-soft)">
+            <h3>¿A quién voy a estudiar?</h3>
+            <ul>
+              <li>Población, muestra y marco muestral</li>
+              <li>Muestreo probabilístico y no probabilístico</li>
+              <li>Tipos dentro de cada familia</li>
+            </ul>
+          </div>
+          <div class="card" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">
+            <h3>¿Cómo obtengo los datos?</h3>
+            <ul>
+              <li>Técnicas cualitativas de recolección</li>
+              <li>Técnicas cuantitativas de recolección</li>
+              <li>Cómo elegir según tu diseño</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="end-note">Ambas decisiones se toman juntas según el diseño de tu tesis.</p>
+    </section>
+
+    <!-- 3. DIVIDER: MUESTREO -->
+    <section class="slide divider" data-title="Divisor 1">
+      <div class="divider-inner">
+        <div class="eyebrow">01</div>
+        <h2>Muestreo</h2>
+        <p>De la población a la muestra: probabilístico y no probabilístico.</p>
+        <div class="duo-bar"><span style="background:var(--prob)"></span><span style="background:var(--noprob)"></span></div>
+      </div>
+    </section>
+
+
+    <!-- 3b. HOOK: FIDEOS -->
+    <section class="slide" data-title="Hook fideos">
+      <div class="kicker" style="--dot:var(--prob)">Muestreo</div>
+      <h2 class="slide-title">Spoiler: ya sabés muestrear</h2>
+      <div class="slide-body" style="align-items:center;">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:22px; max-width:620px; margin:0 auto;">
+          <img src="data:image/png;base64,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" alt="Tuit: Vos probas todos los fideos para ver si estan hechos?" style="width:100%; max-width:560px; border-radius:10px; border:1px solid var(--line); display:block;">
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. POBLACIÓN Y MUESTRA -->
+    <section class="slide" data-title="Población y muestra">
+      <div class="kicker" style="--dot:var(--prob)">Muestreo</div>
+      <h2 class="slide-title">Población y muestra</h2>
+      <div class="slide-body cover" style="display:grid; grid-template-columns:1fr .9fr; align-items:center; gap:30px;">
+        <div class="deflist">
+          <div>
+            <div class="term">Población</div>
+            <div class="desc">El conjunto total de casos o unidades que interesa estudiar — el universo.</div>
+          </div>
+          <div>
+            <div class="term">Muestra</div>
+            <div class="desc">El subconjunto de la población que efectivamente se estudia.</div>
+          </div>
+          <div>
+            <div class="term">Marco muestral</div>
+            <div class="desc">El listado o procedimiento que permite identificar a las unidades de la población.</div>
+          </div>
+          <div>
+            <div class="term">¿Por qué muestreamos?</div>
+            <div class="desc">Factibilidad, tiempo y costos — rara vez es posible o necesario censar a toda la población.</div>
+          </div>
+        </div>
+        <div class="dotfield-wrap"><svg id="conceptField" viewBox="0 0 468 312"></svg></div>
+      </div>
+    </section>
+
+    <!-- 5. DOS FAMILIAS -->
+    <section class="slide" data-title="Dos familias">
+      <div class="kicker" style="--dot:var(--prob)">Muestreo</div>
+      <h2 class="slide-title">Dos grandes familias</h2>
+      <div class="slide-body">
+        <div class="compare">
+          <div class="col">
+            <div class="chip" style="--accent:var(--prob); --accent-soft:var(--prob-soft)">Probabilístico</div>
+            <ul style="--accent:var(--prob)">
+              <li>Toda unidad tiene una probabilidad conocida, mayor a cero, de ser elegida</li>
+              <li>La selección es al azar</li>
+              <li>Permite estimar el error muestral y generalizar a la población</li>
+              <li>Exige contar con un marco muestral</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="chip" style="--accent:var(--noprob); --accent-soft:var(--noprob-soft)">No probabilístico</div>
+            <ul style="--accent:var(--noprob)">
+              <li>La selección depende de criterios del investigador o de la accesibilidad de los casos</li>
+              <li>No hay control sobre la probabilidad de selección</li>
+              <li>No permite generalizar estadísticamente — sí aporta profundidad</li>
+              <li>Frecuente en diseños cualitativos y exploratorios</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PROBABILÍSTICO TIPOS -->
+    <section class="slide" data-title="Probabilístico">
+      <div class="kicker" style="--dot:var(--prob)">Muestreo probabilístico</div>
+      <h2 class="slide-title">Cuatro tipos</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="--accent:var(--prob); --accent-soft:var(--prob-soft)">
+            <h3>Aleatorio simple</h3>
+            <ul><li>Cada unidad tiene la misma probabilidad de ser elegida (sorteo, números aleatorios)</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--prob); --accent-soft:var(--prob-soft)">
+            <h3>Sistemático</h3>
+            <ul><li>Se elige cada k-ésimo caso de una lista ordenada, desde un inicio al azar</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--prob); --accent-soft:var(--prob-soft)">
+            <h3>Estratificado</h3>
+            <ul><li>Se divide la población en estratos homogéneos (edad, género, nivel educativo) y se muestrea dentro de cada uno</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--prob); --accent-soft:var(--prob-soft)">
+            <h3>Por conglomerados</h3>
+            <ul><li>Se muestrean unidades ya agrupadas naturalmente (escuelas, barrios) y se estudia a sus integrantes</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. NO PROBABILÍSTICO TIPOS -->
+    <section class="slide" data-title="No probabilístico">
+      <div class="kicker" style="--dot:var(--noprob)">Muestreo no probabilístico</div>
+      <h2 class="slide-title">Cuatro tipos</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="--accent:var(--noprob); --accent-soft:var(--noprob-soft)">
+            <h3>Por conveniencia</h3>
+            <ul><li>Se seleccionan los casos más accesibles — rápido y económico, mayor riesgo de sesgo</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--noprob); --accent-soft:var(--noprob-soft)">
+            <h3>Bola de nieve</h3>
+            <ul><li>Los primeros participantes refieren a otros con características similares — útil para poblaciones ocultas o de difícil acceso</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--noprob); --accent-soft:var(--noprob-soft)">
+            <h3>Intencional o por juicio</h3>
+            <ul><li>El investigador elige los casos según su relevancia teórica para la pregunta de investigación</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--noprob); --accent-soft:var(--noprob-soft)">
+            <h3>Por cuotas</h3>
+            <ul><li>Se fijan cupos según características conocidas de la población, pero la selección dentro de cada cupo no es al azar</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. CUÁL ELEGIR -->
+    <section class="slide" data-title="Cuál elegir">
+      <div class="kicker" style="--dot:var(--ink)">Muestreo</div>
+      <h2 class="slide-title">¿Cuál elegir?</h2>
+      <div class="slide-body">
+        <div class="deflist" style="max-width:100%;">
+          <div class="desc">¿Necesitás generalizar los resultados a la población? → pensá en un diseño probabilístico.</div>
+          <div class="desc">¿Existe un marco muestral disponible? → condición necesaria para lo probabilístico.</div>
+          <div class="desc">¿El objetivo es comprender en profundidad un fenómeno o una población de difícil acceso? → un diseño no probabilístico suele ajustar mejor.</div>
+          <div class="desc">¿Con qué tiempo y recursos contás para el trabajo de campo?</div>
+        </div>
+      </div>
+      <p class="end-note">El diseño de tu tesis — no la comodidad — debería definir el tipo de muestreo.</p>
+    </section>
+
+    <!-- 9. DIVIDER: TÉCNICAS -->
+    <section class="slide divider" data-title="Divisor 2">
+      <div class="divider-inner">
+        <div class="eyebrow">02</div>
+        <h2>Técnicas de recolección de datos</h2>
+        <p>Cómo se obtienen los datos, según el enfoque: cualitativo y cuantitativo.</p>
+        <div class="duo-bar"><span style="background:var(--cuali)"></span><span style="background:var(--cuanti)"></span></div>
+      </div>
+    </section>
+
+    <!-- 10. CUALITATIVAS I -->
+    <section class="slide" data-title="Cualitativas I">
+      <div class="kicker" style="--dot:var(--cuali)">Técnicas cualitativas</div>
+      <h2 class="slide-title">Describir las cualidades de un fenómeno</h2>
+      <p class="slide-subtitle">Objetivo: describir las cualidades formales y teórico-conceptuales de un fenómeno.</p>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="--accent:var(--cuali); --accent-soft:var(--cuali-soft)">
+            <h3>Observación</h3>
+            <ul>
+              <li>Uso semántico de los sentidos para relevar datos que ayuden a resolver el problema</li>
+              <li>Debe tener un propósito específico y registrarse en forma escrita o gráfica</li>
+              <li>Explica el fenómeno tal como se da en la realidad</li>
+            </ul>
+          </div>
+          <div class="card" style="--accent:var(--cuali); --accent-soft:var(--cuali-soft)">
+            <h3>Campos y redes semánticas</h3>
+            <ul>
+              <li>Explicita el problema partiendo de un núcleo que detona conceptos clave</li>
+              <li>Define palabras clave y las organiza en un esquema de red semántica</li>
+              <li>Jerarquiza los conceptos según su importancia</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. CUALITATIVAS II -->
+    <section class="slide" data-title="Cualitativas II">
+      <div class="kicker" style="--dot:var(--cuali)">Técnicas cualitativas</div>
+      <h2 class="slide-title">Del contenido a la síntesis teórica</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="--accent:var(--cuali); --accent-soft:var(--cuali-soft)">
+            <h3>Análisis</h3>
+            <ul>
+              <li>Analiza el contenido y separa al fenómeno en las variables que lo componen</li>
+              <li>Define las variables o criterios a analizar</li>
+              <li>Define el tipo de análisis (por ejemplo, comparativo-explicativo)</li>
+            </ul>
+          </div>
+          <div class="card" style="--accent:var(--cuali); --accent-soft:var(--cuali-soft)">
+            <h3>Síntesis</h3>
+            <ul>
+              <li>Realiza apreciaciones sistemáticas sobre los enfoques teóricos relevados</li>
+              <li>Encuentra coincidencias y discrepancias entre autores</li>
+              <li>Ofrece una visión concreta de los documentos estudiados</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. CUANTITATIVAS I -->
+    <section class="slide" data-title="Cuantitativas I">
+      <div class="kicker" style="--dot:var(--cuanti)">Técnicas cuantitativas</div>
+      <h2 class="slide-title">Observar y preguntar con precisión</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">
+            <h3>Observación</h3>
+            <ul>
+              <li>Orientada a objetos precisos de estudio, con función y propósito específicos</li>
+              <li>Requiere registro y formalización — protocolos, grillas de observación</li>
+            </ul>
+          </div>
+          <div class="card" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">
+            <h3>Cuestionarios</h3>
+            <ul>
+              <li>Parten de un conocimiento previo del fenómeno a medir</li>
+              <li>Permiten obtener información clara y precisa, optimizando tiempo y recursos</li>
+              <li>Dos tipos: abiertos (respuesta libre) y cerrados (opciones predefinidas)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. CUANTITATIVAS II - ENCUESTAS -->
+    <section class="slide" data-title="Cuantitativas II">
+      <div class="kicker" style="--dot:var(--cuanti)">Técnicas cuantitativas</div>
+      <h2 class="slide-title">Encuestas</h2>
+      <div class="slide-body">
+        <div class="deflist" style="max-width:100%;">
+          <div class="desc">Aplicación sistemática de un cuestionario a una muestra de la población.</div>
+          <div class="desc">Se define primero el tema y se describe la situación que se quiere relevar.</div>
+          <div class="desc">Sigue una secuencia estandarizada de administración.</div>
+        </div>
+      </div>
+      <p class="end-note">Si buscás generalizar los resultados, la encuesta suele apoyarse en un muestreo probabilístico.</p>
+    </section>
+
+    <!-- 14. CUANTITATIVAS III - ENTREVISTAS -->
+    <section class="slide" data-title="Cuantitativas III">
+      <div class="kicker" style="--dot:var(--cuanti)">Técnicas cuantitativas</div>
+      <h2 class="slide-title">Entrevistas — tipos</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">
+            <h3>Estructurada</h3>
+            <ul><li>El entrevistador conoce de antemano los ítems y está preparado para formularlos en orden fijo</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">
+            <h3>Formalizada</h3>
+            <ul><li>Orden y redacción de las preguntas invariables</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">
+            <h3>No estructurada / no formalizada</h3>
+            <ul><li>Conversación abierta sobre el tema, sin ítems fijos</li></ul>
+          </div>
+          <div class="card" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">
+            <h3>Focalizada</h3>
+            <ul><li>Libre y espontánea, centrada en un único tema</li></ul>
+          </div>
+        </div>
+      </div>
+      <p class="end-note">Las preguntas pueden ser de alternativas fijas o cerradas, o de final abierto.</p>
+    </section>
+
+    <!-- 15. CUALI VS CUANTI SÍNTESIS -->
+    <section class="slide" data-title="Síntesis cuali-cuanti">
+      <div class="kicker" style="--dot:var(--ink)">Técnicas de recolección</div>
+      <h2 class="slide-title">Cualitativo y cuantitativo, en espejo</h2>
+      <div class="slide-body">
+        <div class="compare">
+          <div class="col">
+            <div class="chip" style="--accent:var(--cuali); --accent-soft:var(--cuali-soft)">Cualitativo</div>
+            <ul style="--accent:var(--cuali)">
+              <li>Observación · campos y redes semánticas · análisis · síntesis</li>
+              <li>Busca comprender el sentido y las cualidades de un fenómeno</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="chip" style="--accent:var(--cuanti); --accent-soft:var(--cuanti-soft)">Cuantitativo</div>
+            <ul style="--accent:var(--cuanti)">
+              <li>Observación · cuestionarios · encuestas · entrevistas</li>
+              <li>Busca medir, sistematizar y, a veces, generalizar</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="end-note">Muchas tesis combinan ambos enfoques — lo importante es que la técnica responda a la pregunta de investigación.</p>
+    </section>
+
+    <!-- 16. CIERRE / ACTIVIDAD -->
+    <section class="slide" data-title="Actividad">
+      <div class="kicker" style="--dot:var(--ink)">Para tu proyecto</div>
+      <h2 class="slide-title">Ahora, pensalo para tu tesis</h2>
+      <div class="slide-body">
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><p>¿Cuál es tu población y contás con un marco muestral?</p></div>
+          <div class="step"><div class="step-num">2</div><p>¿Qué tipo de muestreo se ajusta a tu diseño, y por qué?</p></div>
+          <div class="step"><div class="step-num">3</div><p>¿Qué técnica o técnicas de recolección vas a usar?</p></div>
+          <div class="step"><div class="step-num">4</div><p>¿Esa técnica es coherente con tu pregunta de investigación?</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17. REFERENCIAS -->
+    <section class="slide" data-title="Referencias">
+      <div class="kicker" style="--dot:var(--ink)">Para seguir leyendo</div>
+      <h2 class="slide-title">Referencias</h2>
+      <div class="slide-body">
+        <div class="deflist" style="max-width:100%;">
+          <div class="desc">Hernández-Sampieri, R., Fernández-Collado, C. &amp; Baptista, P. — <em>Metodología de la investigación</em>.</div>
+          <div class="desc">Taylor, S. J. &amp; Bogdan, R. — <em>Introducción a los métodos cualitativos de investigación</em>.</div>
+        </div>
+      </div>
+      <p class="end-note">Taller de Tesis · UAI</p>
+    </section>
+
+  </div>
+</div>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+<nav class="navbar" aria-label="Navegación de diapositivas">
+  <span class="hint">Usá ← → o hacé clic para navegar</span>
+  <div class="dots" id="dots"></div>
+  <div class="navbar-right">
+    <button class="navbtn" id="prevBtn" aria-label="Diapositiva anterior">‹</button>
+    <span class="counter"><span id="curNum">1</span>&nbsp;/&nbsp;<span id="totalNum"></span></span>
+    <button class="navbtn" id="nextBtn" aria-label="Diapositiva siguiente">›</button>
+  </div>
+</nav>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+
+  document.getElementById('totalNum').textContent = total;
+
+  function buildDots(){
+    var wrap = document.getElementById('dots');
+    slides.forEach(function(_, i){
+      var b = document.createElement('button');
+      b.className = 'dot';
+      b.setAttribute('aria-label', 'Ir a diapositiva ' + (i+1));
+      b.addEventListener('click', function(){ goTo(i); });
+      wrap.appendChild(b);
+    });
+  }
+
+  function goTo(n){
+    current = Math.max(0, Math.min(total - 1, n));
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === current); });
+    document.querySelectorAll('.dot').forEach(function(d, i){ d.classList.toggle('active', i === current); });
+    document.getElementById('curNum').textContent = current + 1;
+    document.getElementById('progressFill').style.width = (current / (total - 1) * 100) + '%';
+    history.replaceState(null, '', '#/' + (current + 1));
+  }
+
+  function next(){ goTo(current + 1); }
+  function prev(){ goTo(current - 1); }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    if (['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key) !== -1){ e.preventDefault(); next(); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) !== -1){ e.preventDefault(); prev(); }
+    else if (e.key === 'Home'){ goTo(0); }
+    else if (e.key === 'End'){ goTo(total - 1); }
+  });
+
+  var touchStartX = null;
+  document.addEventListener('touchstart', function(e){ touchStartX = e.changedTouches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (dx < -50) next(); else if (dx > 50) prev();
+    touchStartX = null;
+  }, {passive:true});
+
+  function fitStage(){
+    var reserved = 56;
+    var availW = window.innerWidth;
+    var availH = window.innerHeight - reserved;
+    var scale = Math.min(availW / 1280, availH / 720) * 0.96;
+    var stage = document.getElementById('stage');
+    stage.style.top = (availH / 2) + 'px';
+    stage.style.left = '50%';
+    stage.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+  }
+  window.addEventListener('resize', fitStage);
+
+  function buildDotField(svg, cols, rows, spacing, radius, hiRadius, highlightSet, hiColor, baseColor){
+    var idx = 0;
+    for (var r = 0; r < rows; r++){
+      for (var c = 0; c < cols; c++){
+        var isHi = highlightSet.indexOf(idx) !== -1;
+        var cx = c * spacing + spacing / 2;
+        var cy = r * spacing + spacing / 2;
+        var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', isHi ? hiRadius : radius);
+        circle.setAttribute('fill', isHi ? hiColor : baseColor);
+        circle.setAttribute('opacity', isHi ? '1' : '0.35');
+        svg.appendChild(circle);
+        idx++;
+      }
+    }
+  }
+
+  function initFields(){
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+    var prob = getComputedStyle(document.documentElement).getPropertyValue('--prob').trim();
+
+    var cover = document.getElementById('coverField');
+    buildDotField(cover, 11, 7, 48, 5, 9, [13,5,30,34,48,53,61,68,20,73], prob, ink);
+
+    var concept = document.getElementById('conceptField');
+    var hi = [14,15,16,23,24,25,32,33,34];
+    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', 252); rect.setAttribute('y', 44);
+    rect.setAttribute('width', 172); rect.setAttribute('height', 172);
+    rect.setAttribute('rx', 12);
+    rect.setAttribute('fill', 'none');
+    rect.setAttribute('stroke', prob);
+    rect.setAttribute('stroke-width', 1.5);
+    rect.setAttribute('stroke-dasharray', '4 4');
+    concept.appendChild(rect);
+    buildDotField(concept, 9, 6, 52, 5, 8, hi, prob, ink);
+
+    var t1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t1.setAttribute('x', 6); t1.setAttribute('y', 18); t1.setAttribute('font-size', 14);
+    t1.textContent = 'Población (N)';
+    concept.appendChild(t1);
+
+    var t2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t2.setAttribute('x', 252); t2.setAttribute('y', 36); t2.setAttribute('font-size', 14);
+    t2.setAttribute('fill', prob); t2.setAttribute('font-weight', '600');
+    t2.textContent = 'Muestra (n)';
+    concept.appendChild(t2);
+  }
+
+  buildDots();
+  initFields();
+
+  var m = location.hash.match(/#\/(\d+)/);
+  goTo(m ? parseInt(m[1], 10) - 1 : 0);
+  fitStage();
+})();
+</script>
+
+</body>
+</html>
