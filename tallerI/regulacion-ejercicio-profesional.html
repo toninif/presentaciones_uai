@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clase 4 · Regulación del Ejercicio Profesional</title>
+<style>
+  :root{
+    --navy:#1E2A4A;
+    --navy2:#26365E;
+    --teal:#2E6E7E;
+    --gold:#C8952B;
+    --ink:#1B2333;
+    --mute:#6B7280;
+    --light:#FFFFFF;
+    --pale:#EEF1F4;
+    --paleg:#F6EEDD;
+    --line:#D9DEE5;
+    --brick:#A6453B;
+    --paleb:#F5E7E4;
+    --green:#2E7D5B;
+    --palegr:#E4F0EA;
+    --head: 'Cambria','Georgia','Times New Roman',serif;
+    --body: 'Calibri','Segoe UI',Roboto,Arial,sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:#DEE2E8;
+    font-family:var(--body);
+    overflow:hidden;
+  }
+
+  /* ---------- Stage / scaling ---------- */
+  .viewport{
+    height:100vh; width:100vw;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    gap:14px;
+  }
+  .stage-wrap{
+    position:relative;
+    width:1280px; height:720px;
+    transform-origin:center center;
+    box-shadow:0 18px 48px rgba(20,26,44,0.28);
+  }
+  .slide{
+    position:absolute; inset:0;
+    width:1280px; height:720px;
+    background:var(--light);
+    display:none;
+    overflow:hidden;
+  }
+  .slide.active{ display:block; }
+  .slide-inner{
+    position:relative;
+    width:100%; height:100%;
+    padding:58px 64px 50px 58px;
+  }
+
+  /* ---------- Typography ---------- */
+  .kicker{
+    font-family:var(--body);
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:2.4px;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin:0 0 10px 0;
+  }
+  .slide.navy .kicker{ color:var(--gold); }
+  h1.title{
+    font-family:var(--head);
+    font-weight:700;
+    color:var(--navy);
+    font-size:44px;
+    line-height:1.18;
+    margin:0 0 6px 0;
+  }
+  h2.title{
+    font-family:var(--head);
+    font-weight:700;
+    color:var(--navy);
+    font-size:33px;
+    line-height:1.2;
+    margin:0 0 4px 0;
+  }
+  .slide.navy h1.title, .slide.navy h2.title{ color:var(--light); }
+  .subtitle{
+    font-family:var(--body);
+    font-size:17px;
+    color:var(--mute);
+    font-style:italic;
+    max-width:900px;
+    line-height:1.5;
+    margin:10px 0 0 0;
+  }
+  .slide.navy .subtitle{ color:#C9D3E4; }
+  p, li{ color:var(--ink); font-size:16.5px; line-height:1.55; }
+
+  /* ---------- Header block ---------- */
+  .slide-header{ margin-bottom:26px; }
+  .rule{
+    width:56px; height:4px; border-radius:2px;
+    background:var(--gold); margin:14px 0 0 0;
+  }
+
+  /* ---------- Footer ---------- */
+  .slide-footer{
+    position:absolute; left:58px; right:58px; bottom:26px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:12px; color:var(--mute);
+    border-top:1px solid var(--line);
+    padding-top:10px;
+  }
+  .slide.navy .slide-footer{ border-top-color:rgba(255,255,255,0.18); color:#9AA6BE; }
+
+  /* ---------- Cover slide ---------- */
+  .slide.cover{ background:var(--navy); }
+  .slide.cover .slide-inner{ padding:0; display:flex; flex-direction:column; justify-content:center; padding-left:64px; }
+  .slide.cover .kicker{ font-size:15px; letter-spacing:3px; }
+  .slide.cover h1.title{ font-size:60px; line-height:1.14; margin-top:10px; }
+  .slide.cover .subtitle{ font-size:18px; margin-top:20px; max-width:760px; font-style:normal; }
+  .cover-accent{
+    position:absolute; left:64px; top:170px;
+    width:6px; height:78px; border-radius:3px; background:var(--gold);
+  }
+  .cover-tag{
+    position:absolute; left:64px; bottom:48px;
+    font-size:13px; color:#8FA0C4; letter-spacing:1px;
+  }
+  .cover-motif{
+    position:absolute; right:0; top:0; bottom:0; width:340px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cover-motif svg{ width:260px; height:260px; opacity:0.9; }
+
+  /* ---------- Divider slide ---------- */
+  .slide.divider{ background:var(--navy); }
+  .slide.divider .slide-inner{ display:flex; flex-direction:column; justify-content:center; }
+  .divider-bar{
+    width:0.22in; width:22px; height:1.5in; height:110px;
+    border-radius:6px; background:var(--gold);
+    position:absolute; left:58px; top:50%; transform:translateY(-70px);
+  }
+  .divider-content{ margin-left:56px; max-width:980px; }
+  .slide.divider h2.title{ font-size:38px; }
+  .slide.divider .subtitle{ font-size:17px; font-style:italic; margin-top:18px; }
+
+  /* ---------- Cards (contenidos / objetivos) ---------- */
+  .cards{ display:flex; gap:24px; margin-top:6px; }
+  .card{
+    flex:1; background:var(--pale); border:1px solid var(--line);
+    border-radius:10px; padding:26px 24px;
+  }
+  .card .num{
+    width:40px; height:40px; border-radius:50%;
+    background:var(--teal); color:var(--light);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--head); font-weight:700; font-size:17px;
+    margin-bottom:16px;
+  }
+  .card:nth-child(2) .num{ background:var(--navy); }
+  .card:nth-child(3) .num{ background:var(--gold); }
+  .card h3{
+    font-family:var(--head); font-size:19px; color:var(--navy);
+    margin:0 0 8px 0; line-height:1.3;
+  }
+  .card p{ font-size:15px; color:var(--ink); margin:0; line-height:1.5; }
+
+  /* ---------- Objetivos list ---------- */
+  .obj-list{ list-style:none; margin:8px 0 0 0; padding:0; max-width:980px; }
+  .obj-list li{
+    display:flex; gap:16px; align-items:flex-start;
+    padding:16px 0; border-bottom:1px solid var(--line);
+    font-size:18px;
+  }
+  .obj-list li:last-child{ border-bottom:none; }
+  .obj-list .dot{
+    flex:0 0 auto; width:10px; height:10px; border-radius:50%;
+    background:var(--gold); margin-top:8px;
+  }
+
+  /* ---------- Timeline ---------- */
+  .timeline-wrap{ position:relative; margin-top:78px; padding:0 20px; }
+  .timeline-line{
+    position:absolute; left:20px; right:20px; top:27px;
+    height:2px; background:var(--line);
+  }
+  .timeline-nodes{ display:flex; justify-content:space-between; position:relative; }
+  .tnode{ width:23%; text-align:center; }
+  .tnode .badge{
+    width:56px; height:56px; border-radius:50%;
+    background:var(--teal); color:var(--light);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--head); font-weight:700; font-size:13px;
+    margin:0 auto 18px auto; position:relative; z-index:2;
+    line-height:1.15; text-align:center;
+    border:4px solid var(--light);
+  }
+  .tnode:nth-child(2) .badge{ background:var(--gold); }
+  .tnode:nth-child(3) .badge{ background:var(--navy); }
+  .tnode:nth-child(4) .badge{ background:var(--brick); }
+  .tnode .date{ font-size:13px; color:var(--mute); font-weight:700; letter-spacing:0.5px; margin-bottom:6px; }
+  .tnode h4{ font-family:var(--head); font-size:16px; color:var(--navy); margin:0 0 6px 0; line-height:1.3; }
+  .tnode p{ font-size:13.5px; color:var(--mute); margin:0; line-height:1.4; }
+
+  /* ---------- Comparison (2 laws) ---------- */
+  .compare{ display:flex; gap:26px; margin-top:10px; }
+  .law-card{
+    flex:1; border-radius:12px; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .law-head{ padding:20px 24px; color:var(--light); }
+  .law-card.bsas .law-head{ background:var(--teal); }
+  .law-card.caba .law-head{ background:var(--navy2); }
+  .law-head .law-num{ font-family:var(--head); font-size:24px; font-weight:700; }
+  .law-head .law-name{ font-size:13.5px; opacity:0.92; margin-top:2px; }
+  .law-rows{ background:var(--light); }
+  .law-row{ padding:15px 24px; border-bottom:1px solid var(--line); }
+  .law-row:last-child{ border-bottom:none; }
+  .law-row .rlabel{ font-size:11.5px; text-transform:uppercase; letter-spacing:1.2px; color:var(--mute); font-weight:700; margin-bottom:4px; }
+  .law-row .rval{ font-size:15px; color:var(--ink); line-height:1.4; }
+
+  /* ---------- Bullet block ---------- */
+  .bullets{ margin-top:8px; max-width:1000px; }
+  .bullets .b-item{ display:flex; gap:14px; margin-bottom:16px; }
+  .bullets .b-item .mark{
+    flex:0 0 auto; width:8px; height:8px; border-radius:50%;
+    background:var(--teal); margin-top:9px;
+  }
+  .bullets .b-item p{ margin:0; font-size:17px; }
+  .bullets .b-item strong{ color:var(--navy); }
+
+  /* ---------- Two-col split ---------- */
+  .twocol{ display:flex; gap:36px; margin-top:8px; }
+  .twocol .col{ flex:1; }
+  .box{
+    background:var(--pale); border:1px solid var(--line); border-radius:10px;
+    padding:22px 24px;
+  }
+  .box.gold{ background:var(--paleg); border-color:#E7D3A0; }
+  .box h4{ font-family:var(--head); color:var(--navy); font-size:16.5px; margin:0 0 8px 0; }
+  .box p{ font-size:14.5px; margin:0; line-height:1.5; }
+
+  /* ---------- Domain cluster grid ---------- */
+  .cluster-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:14px; }
+  .cluster{
+    border-radius:10px; padding:18px 20px; border:1px solid var(--line);
+    background:var(--pale);
+  }
+  .cluster .chead{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .cluster h4{ font-family:var(--head); font-size:15.5px; color:var(--navy); margin:0; line-height:1.25; }
+  .cluster .count{ font-size:12px; font-weight:700; color:var(--light); background:var(--teal); border-radius:20px; padding:3px 10px; white-space:nowrap; }
+  .cluster p{ font-size:13px; color:var(--mute); margin:0; line-height:1.45; }
+  .cluster.c-clinica .count{ background:var(--teal); }
+  .cluster.c-invest .count{ background:var(--navy); }
+  .cluster.c-edu .count{ background:var(--gold); }
+  .cluster.c-labor .count{ background:var(--brick); }
+  .cluster.c-juridico .count{ background:var(--green); }
+  .cluster.c-social .count{ background:#5C6B8A; }
+
+  /* ---------- Spotlight (foco) ---------- */
+  .spot-grid{ display:flex; gap:26px; margin-top:10px; }
+  .spot{
+    flex:1; border-radius:12px; padding:26px 26px 22px 26px;
+    border:1.5px solid; position:relative;
+  }
+  .spot.clinica{ background:var(--palegr); border-color:var(--green); }
+  .spot.invest{ background:#EAEFF7; border-color:var(--navy); }
+  .spot .stag{
+    display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:1.2px;
+    text-transform:uppercase; color:var(--light); border-radius:20px; padding:4px 12px; margin-bottom:12px;
+  }
+  .spot.clinica .stag{ background:var(--green); }
+  .spot.invest .stag{ background:var(--navy); }
+  .spot h4{ font-family:var(--head); font-size:19px; color:var(--navy); margin:0 0 10px 0; }
+  .spot ul{ margin:0; padding-left:18px; }
+  .spot li{ font-size:14.5px; margin-bottom:8px; line-height:1.45; }
+  .spot .item-tag{ font-weight:700; color:var(--navy); }
+  .note-box{
+    margin-top:18px; background:var(--paleg); border-left:4px solid var(--gold);
+    border-radius:6px; padding:14px 18px;
+  }
+  .note-box p{ font-size:14px; margin:0; color:var(--ink); line-height:1.5; }
+  .note-box p + p{ margin-top:10px; }
+
+  /* ---------- Clause quote ---------- */
+  .clause-quote{
+    background:#F7F5EF; border:1px solid #E3DCC8; border-left:4px solid var(--navy);
+    border-radius:6px; padding:18px 22px; margin-top:2px;
+  }
+  .clause-quote .csrc{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:1.1px;
+    color:var(--mute); font-weight:700; margin-bottom:8px;
+  }
+  .clause-quote p{ font-size:16px; color:var(--ink); font-style:italic; margin:0; line-height:1.55; }
+
+  /* ---------- Verdict pair ---------- */
+  .verdict-pair{ display:flex; gap:24px; margin-top:20px; }
+  .verdict{ flex:1; border-radius:10px; padding:20px 22px; border:1px solid var(--line); background:var(--light); }
+  .verdict .vhead{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+  .verdict .vhead h4{ font-family:var(--head); font-size:15px; color:var(--navy); margin:0; }
+  .verdict .vtag{
+    font-size:10.5px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;
+    border-radius:20px; padding:4px 11px; color:var(--light); white-space:nowrap;
+  }
+  .verdict.has .vtag{ background:var(--teal); }
+  .verdict.lacks .vtag{ background:var(--brick); }
+  .verdict p{ font-size:14px; margin:0; line-height:1.5; color:var(--ink); }
+
+  /* ---------- Synthesis ---------- */
+  .synth-row{ display:flex; gap:20px; margin-top:10px; }
+  .synth-col{ flex:1; border-radius:10px; padding:20px 22px; }
+  .synth-col.before{ background:var(--paleb); border:1px solid #E4C3BC; }
+  .synth-col.after{ background:var(--palegr); border:1px solid #BFDDCB; }
+  .synth-col.persists{ background:var(--pale); border:1px solid var(--line); }
+  .synth-col .stitle{ font-family:var(--head); font-size:15.5px; color:var(--navy); margin:0 0 10px 0; }
+  .synth-col ul{ margin:0; padding-left:16px; }
+  .synth-col li{ font-size:13.5px; margin-bottom:7px; line-height:1.42; }
+
+  /* ---------- Bibliography ---------- */
+  .biblio-list{ margin-top:14px; }
+  .biblio-item{
+    display:flex; gap:18px; padding:20px 0; border-bottom:1px solid var(--line);
+  }
+  .biblio-item:last-child{ border-bottom:none; }
+  .biblio-item .bnum{
+    flex:0 0 auto; width:34px; height:34px; border-radius:50%;
+    background:var(--navy); color:var(--light); display:flex; align-items:center; justify-content:center;
+    font-family:var(--head); font-weight:700; font-size:14px;
+  }
+  .biblio-item h4{ font-family:var(--head); font-size:16.5px; color:var(--navy); margin:0 0 4px 0; }
+  .biblio-item p{ font-size:14px; color:var(--mute); margin:0; }
+
+  /* ---------- Controls (outside stage) ---------- */
+  .controls{
+    display:flex; align-items:center; gap:16px;
+    font-family:var(--body); color:#4B5563; font-size:13px;
+  }
+  .controls button{
+    width:36px; height:36px; border-radius:50%; border:1px solid #C7CDD8;
+    background:var(--light); cursor:pointer; font-size:16px; color:var(--navy);
+    display:flex; align-items:center; justify-content:center;
+    transition:background 0.15s;
+  }
+  .controls button:hover{ background:var(--pale); }
+  .controls button:disabled{ opacity:0.35; cursor:default; }
+  .dots{ display:flex; gap:6px; }
+  .dot-i{
+    width:7px; height:7px; border-radius:50%; background:#B7BFCC; cursor:pointer;
+    transition:background 0.15s, transform 0.15s;
+  }
+  .dot-i.on{ background:var(--gold); transform:scale(1.3); }
+  .counter{ min-width:52px; text-align:center; font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+
+<div class="viewport">
+  <div class="stage-wrap" id="stage">
+
+    <!-- 1. COVER -->
+    <section class="slide navy cover active">
+      <div class="slide-inner">
+        <div class="cover-accent"></div>
+        <p class="kicker" style="margin-left:0;">Seminario Taller de Integración I</p>
+        <h1 class="title">Regulación del<br>Ejercicio Profesional</h1>
+        <p class="subtitle">Clase 4 — Leyes de ejercicio profesional, colegios profesionales e incumbencias de 1985</p>
+        <div class="cover-tag">Seminario Taller I · UAI</div>
+      </div>
+    </section>
+
+    <!-- 2. CONTENIDOS -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Clase 4</p>
+          <h2 class="title">Contenidos</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="cards">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>Leyes de ejercicio profesional</h3>
+            <p>Quién puede ejercer la psicología, en qué jurisdicción y bajo qué reglas.</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>Colegios profesionales</h3>
+            <p>Los organismos de matriculación, representación y control disciplinario de la profesión.</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>Incumbencias de 1985</h3>
+            <p>La incorporación explícita de la Psicología Clínica y la Investigación como ámbitos de ejercicio.</p>
+          </div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>02</span></div>
+      </div>
+    </section>
+
+    <!-- 3. OBJETIVOS -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Objetivos</p>
+          <h2 class="title">Qué vamos a poder hacer al final de la clase</h2>
+          <div class="rule"></div>
+        </div>
+        <ul class="obj-list">
+          <li><span class="dot"></span>Identificar el marco legal que regula el ejercicio profesional de la psicología en la Argentina a partir de 1985.</li>
+          <li><span class="dot"></span>Comparar el modelo de colegiación de la Provincia de Buenos Aires con el régimen nacional vigente en Capital Federal y territorios.</li>
+          <li><span class="dot"></span>Analizar el significado de las incumbencias de 1985 en relación con los debates sobre el rol del psicólogo trabajados en la Clase 3.</li>
+        </ul>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>03</span></div>
+      </div>
+    </section>
+
+    <!-- 4. DIVIDER: puente desde clase 3 -->
+    <section class="slide navy divider">
+      <div class="slide-inner">
+        <div class="divider-bar"></div>
+        <div class="divider-content">
+          <p class="kicker">De la Clase 3 a la Clase 4</p>
+          <h2 class="title">De las incumbencias de 1980 a la consolidación legal de 1985</h2>
+          <p class="subtitle">Las incumbencias de 1980 no reconocían un ámbito propio de práctica clínica. Tras la reapertura democrática, entre agosto y noviembre de 1985 se sanciona el marco que resuelve —al menos normativamente— buena parte de esa tensión.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CRONOLOGÍA -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Cronología</p>
+          <h2 class="title">Un año clave: 1985</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="timeline-wrap">
+          <div class="timeline-line"></div>
+          <div class="timeline-nodes">
+            <div class="tnode">
+              <div class="badge">1<br>AGO</div>
+              <div class="date">1985</div>
+              <h4>Ley 10.306</h4>
+              <p>Sancionada en La Plata. Ejercicio profesional en la Provincia de Buenos Aires.</p>
+            </div>
+            <div class="tnode">
+              <div class="badge">20<br>SEP</div>
+              <div class="date">1985</div>
+              <h4>Resolución 2447</h4>
+              <p>Ministerio de Educación y Cultura. Incumbencias nacionales del título.</p>
+            </div>
+            <div class="tnode">
+              <div class="badge">27<br>SEP</div>
+              <div class="date">1985</div>
+              <h4>Ley 23.277 sancionada</h4>
+              <p>Congreso Nacional. Ejercicio profesional en Capital Federal y territorios nacionales.</p>
+            </div>
+            <div class="tnode">
+              <div class="badge">6<br>NOV</div>
+              <div class="date">1985</div>
+              <h4>Ley 23.277 promulgada</h4>
+              <p>Promulgación de hecho; publicada en el Boletín Oficial el 15 de noviembre.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>05</span></div>
+      </div>
+    </section>
+
+    <!-- 6. DOS LEYES -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Marco legal</p>
+          <h2 class="title">Dos leyes, dos jurisdicciones</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="compare">
+          <div class="law-card bsas">
+            <div class="law-head">
+              <div class="law-num">Ley 10.306</div>
+              <div class="law-name">Provincia de Buenos Aires</div>
+            </div>
+            <div class="law-rows">
+              <div class="law-row"><div class="rlabel">Autoridad de aplicación</div><div class="rval">Colegio de Psicólogos de la Provincia de Buenos Aires (crea un colegio propio)</div></div>
+              <div class="law-row"><div class="rlabel">Títulos habilitantes</div><div class="rval">Psicólogo, Licenciado, Psicólogo Clínico / Educacional / Laboral / Social, Doctor en Psicología</div></div>
+              <div class="law-row"><div class="rlabel">Estructura</div><div class="rval">Consejo Superior + 15 Colegios de Distrito, cada uno con Consejo Directivo y Tribunal Disciplinario</div></div>
+              <div class="law-row"><div class="rlabel">Sancionada</div><div class="rval">1 de agosto de 1985</div></div>
+            </div>
+          </div>
+          <div class="law-card caba">
+            <div class="law-head">
+              <div class="law-num">Ley 23.277</div>
+              <div class="law-name">Capital Federal, Tierra del Fuego, Antártida e Islas del Atlántico Sur</div>
+            </div>
+            <div class="law-rows">
+              <div class="law-row"><div class="rlabel">Autoridad de aplicación</div><div class="rval">Secretaría de Salud, Ministerio de Salud y Acción Social — no crea colegio profesional propio</div></div>
+              <div class="law-row"><div class="rlabel">Título habilitante</div><div class="rval">Licenciado en Psicología (o título equivalente reconocido)</div></div>
+              <div class="law-row"><div class="rlabel">Estructura</div><div class="rval">Gobierno de la matrícula centralizado en el Estado nacional, sin colegiación intermedia</div></div>
+              <div class="law-row"><div class="rlabel">Sancionada</div><div class="rval">27 de septiembre de 1985</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>06</span></div>
+      </div>
+    </section>
+
+    <!-- 7. LEY 10306 -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Ley 10.306 · Provincia de Buenos Aires</p>
+          <h2 class="title">Un colegio profesional con gobierno propio de la matrícula</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="bullets">
+          <div class="b-item"><span class="mark"></span><p><strong>Persona jurídica de derecho público</strong>, con sede en La Plata y representación en quince distritos de la Provincia.</p></div>
+          <div class="b-item"><span class="mark"></span><p><strong>Autogobierno de la matrícula:</strong> cada Colegio de Distrito inscribe, controla y —cuando corresponde— sanciona a los psicólogos que ejercen en su jurisdicción.</p></div>
+          <div class="b-item"><span class="mark"></span><p><strong>Atribuciones propias:</strong> dictar el Código de Ética Profesional, fijar aranceles mínimos y reconocer especialidades.</p></div>
+          <div class="b-item"><span class="mark"></span><p><strong>Poder disciplinario gradual:</strong> desde la advertencia privada hasta la cancelación de la matrícula, con posibilidad de apelación y, a los diez años, de rehabilitación.</p></div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>07</span></div>
+      </div>
+    </section>
+
+    <!-- 8. LEY 23277 -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Ley 23.277 · Capital Federal y territorios nacionales</p>
+          <h2 class="title">El Estado como autoridad directa de aplicación</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="twocol">
+          <div class="col box">
+            <h4>Obligaciones del psicólogo</h4>
+            <p>Guardar riguroso secreto profesional; prestar colaboración ante emergencias sanitarias; fijar domicilio profesional dentro de la jurisdicción; aconsejar la internación cuando exista riesgo para el paciente o terceros.</p>
+          </div>
+          <div class="col box gold">
+            <h4>Prohibiciones</h4>
+            <p>Prescribir, administrar o aplicar medicamentos u otros medios físicos o químicos; participar honorarios entre profesionales; anunciar resultados terapéuticos falsos o estadísticas ficticias.</p>
+          </div>
+        </div>
+        <div class="bullets" style="margin-top:22px;">
+          <div class="b-item"><span class="mark"></span><p>A diferencia de la 10.306, no crea un colegio profesional: el gobierno de la matrícula queda directamente en manos de la Secretaría de Salud.</p></div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>08</span></div>
+      </div>
+    </section>
+
+    <!-- 9. PUNTOS EN COMUN -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Dos leyes, un mismo espíritu</p>
+          <h2 class="title">Lo que ambas leyes comparten</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="bullets">
+          <div class="b-item"><span class="mark"></span><p><strong>Ejercicio personal:</strong> queda prohibido prestar la firma o el título profesional a terceros.</p></div>
+          <div class="b-item"><span class="mark"></span><p><strong>Secreto profesional</strong> como obligación central del ejercicio.</p></div>
+          <div class="b-item"><span class="mark"></span><p><strong>Límite frente a la Medicina:</strong> en ambas leyes se prohíbe prescribir medicación u otros tratamientos físico-químicos.</p></div>
+          <div class="b-item"><span class="mark"></span><p><strong>Reconocimiento explícito</strong> de la enseñanza, la investigación y el peritaje/asesoramiento como actividades propias del ejercicio profesional.</p></div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>09</span></div>
+      </div>
+    </section>
+
+    <!-- 9b. DIVIDER: PROBLEMATIZANDO -->
+    <section class="slide navy divider">
+      <div class="slide-inner">
+        <div class="divider-bar"></div>
+        <div class="divider-content">
+          <p class="kicker">Una lectura crítica</p>
+          <h2 class="title">¿Qué garantiza que una práctica clínica sea válida?</h2>
+          <p class="subtitle">Las leyes de 1985 regulan quién puede ejercer y qué puede hacer, pero dicen menos de lo que parece sobre qué hace válido a un método clínico. Tres preguntas para leer el texto legal a contrapelo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9c. DISCUSION B: VALIDACION NEGATIVA -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Ley 10.306, Art. 9° inc. a) — Ley 23.277</p>
+          <h2 class="title">Una validación negativa, y solo en una jurisdicción</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="clause-quote">
+          <div class="csrc">Ley 10.306 · Provincia de Buenos Aires</div>
+          <p>Queda prohibido aplicar a la práctica profesional "procedimientos rechazados por los Centros Universitarios o Científicos reconocidos por el Colegio de Psicólogos".</p>
+        </div>
+        <div class="verdict-pair">
+          <div class="verdict has">
+            <div class="vhead"><h4>Ley 10.306 (PBA)</h4><span class="vtag">Validación negativa</span></div>
+            <p>No exige usar métodos probados: solo prohíbe los que hayan sido rechazados por centros reconocidos. Es un piso mínimo, no un estándar de evidencia.</p>
+          </div>
+          <div class="verdict lacks">
+            <div class="vhead"><h4>Ley 23.277 (CABA y territorios)</h4><span class="vtag">Sin cláusula equivalente</span></div>
+            <p>No hay en el texto ninguna disposición que condicione el método clínico a un aval universitario o científico.</p>
+          </div>
+        </div>
+        <div class="note-box">
+          <p>Para discutir: ¿quién define qué centros son "reconocidos"? Si esos centros —como vimos en la Clase 3— tenían una orientación predominantemente psicoanalítica, ¿la cláusula termina siendo circular: la ciencia "reconocida" definida por el propio paradigma dominante?</p>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>10</span></div>
+      </div>
+    </section>
+
+    <!-- 9d. DISCUSION C: DISCURSO VS METODO -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Ley 23.277, Art. 9° inc. 3</p>
+          <h2 class="title">Prohibir la mentira no es lo mismo que exigir evidencia</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="clause-quote">
+          <div class="csrc">Ley 23.277 · Capital Federal y territorios nacionales</div>
+          <p>Queda prohibido publicar "falsos éxitos terapéuticos, estadísticas ficticias, datos inexactos" o prometer resultados en la curación.</p>
+        </div>
+        <div class="twocol" style="margin-top:22px;">
+          <div class="col box">
+            <h4>Lo que sí regula</h4>
+            <p>El discurso sobre los resultados: no falsear estadísticas, no prometer curaciones, no mentir sobre la eficacia obtenida.</p>
+          </div>
+          <div class="col box gold">
+            <h4>Lo que no regula</h4>
+            <p>Si el método utilizado tiene, en sí mismo, sustento empírico. La ley exige honestidad sobre los resultados, no validación previa del procedimiento.</p>
+          </div>
+        </div>
+        <div class="note-box">
+          <p>Comparada con la 10.306 —que al menos exige que el método no esté "rechazado" por centros reconocidos—, la 23.277 fija un umbral más bajo: alcanza con no mentir sobre lo obtenido, sin que la ley pregunte por el respaldo del método en sí.</p>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>11</span></div>
+      </div>
+    </section>
+
+    <!-- 10. INCUMBENCIAS OVERVIEW -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Resolución 2447/85 · Ministerio de Educación y Cultura</p>
+          <h2 class="title">20 incumbencias para el título de Psicólogo/a y Licenciado/a</h2>
+          <p class="subtitle" style="margin-top:8px;">A diferencia de las leyes de ejercicio —que regulan quién y cómo puede ejercer—, esta resolución de alcance nacional define qué puede hacer un psicólogo en virtud de su título.</p>
+        </div>
+        <div class="cluster-grid">
+          <div class="cluster c-clinica"><div class="chead"><h4>Clínica y salud</h4><span class="count">6</span></div><p>Diagnóstico, tratamiento psicoterapéutico, rehabilitación y promoción de la salud.</p></div>
+          <div class="cluster c-invest"><div class="chead"><h4>Investigación y métodos</h4><span class="count">2</span></div><p>Construcción de instrumentos y estudios en las distintas áreas de la psicología.</p></div>
+          <div class="cluster c-edu"><div class="chead"><h4>Educacional</h4><span class="count">2</span></div><p>Instituciones educativas, orientación vocacional y ocupacional.</p></div>
+          <div class="cluster c-labor"><div class="chead"><h4>Laboral y organizacional</h4><span class="count">5</span></div><p>Selección, perfiles de puestos, prevención de accidentes de trabajo.</p></div>
+          <div class="cluster c-juridico"><div class="chead"><h4>Jurídico-forense</h4><span class="count">3</span></div><p>Pericias, derecho de familia, asesoramiento normativo.</p></div>
+          <div class="cluster c-social"><div class="chead"><h4>Social y derechos humanos</h4><span class="count">2</span></div><p>Medio comunitario y repercusiones psicológicas de su violación.</p></div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>12</span></div>
+      </div>
+    </section>
+
+    <!-- 11. EN FOCO -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">En foco</p>
+          <h2 class="title">La Psicología Clínica y la Investigación, ahora explícitas</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="spot-grid">
+          <div class="spot clinica">
+            <span class="stag">Clínica</span>
+            <h4>Incumbencias 3, 4 y 5</h4>
+            <ul>
+              <li><span class="item-tag">Diagnóstico, pronóstico y seguimiento</span> psicológicos.</li>
+              <li><span class="item-tag">Tratamientos psicoterapéuticos</span> de acuerdo con diferentes modelos teóricos, específicamente psicológicos.</li>
+              <li><span class="item-tag">Rehabilitación psicológica.</span></li>
+            </ul>
+          </div>
+          <div class="spot invest">
+            <span class="stag">Investigación</span>
+            <h4>Incumbencias 6 y 7</h4>
+            <ul>
+              <li><span class="item-tag">Construir y desarrollar</span> métodos, técnicas e instrumentos psicológicos.</li>
+              <li><span class="item-tag">Realizar estudios e investigaciones</span> en las distintas áreas y campos de la psicología.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note-box">
+          <p>Este es el punto que conecta con la Clase 3: donde las incumbencias de 1980 no nombraban un ámbito clínico propio, la Resolución 2447 lo reconoce de manera explícita —junto con la investigación como campo autónomo de ejercicio.</p>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>13</span></div>
+      </div>
+    </section>
+
+    <!-- 11b. DISCUSION D: CLINICA E INVESTIGACION SIN ARTICULAR -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Resolución 2447 · Incumbencias 4, 6 y 7</p>
+          <h2 class="title">Clínica e investigación: incumbencias paralelas, no articuladas</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="twocol">
+          <div class="col box">
+            <h4>Incumbencia 4 — Clínica</h4>
+            <p>"Efectuar tratamientos psicoterapéuticos de acuerdo con diferentes modelos teóricos, específicamente psicológicos."</p>
+          </div>
+          <div class="col box gold">
+            <h4>Incumbencias 6 y 7 — Investigación</h4>
+            <p>"Construir y desarrollar métodos, técnicas e instrumentos psicológicos", y realizar estudios e investigaciones en las distintas áreas de la disciplina.</p>
+          </div>
+        </div>
+        <div class="note-box">
+          <p>Ambas incumbencias figuran como puntos independientes en una lista plana de veinte ítems. No hay ninguna cláusula que subordine o articule la práctica clínica a la producción de investigación: se habilitan como dos ámbitos de ejercicio autónomos, no como una relación de dependencia entre uno y otro.</p>
+          <p>Para discutir: ¿qué implica, para la identidad profesional, que el marco legal no exija esa articulación?</p>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>14</span></div>
+      </div>
+    </section>
+
+    <!-- 12. SINTESIS -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Síntesis</p>
+          <h2 class="title">Qué cambia con 1985</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="synth-row">
+          <div class="synth-col before">
+            <p class="stitle">Antes</p>
+            <ul>
+              <li>Identidad profesional en disputa, sin marco legal unificado.</li>
+              <li>Incumbencias de 1980 sin reconocer explícitamente la práctica clínica.</li>
+            </ul>
+          </div>
+          <div class="synth-col after">
+            <p class="stitle">Después de 1985</p>
+            <ul>
+              <li>Dos leyes de ejercicio profesional (10.306 y 23.277).</li>
+              <li>Una resolución de incumbencias de alcance nacional.</li>
+              <li>La psicología clínica y la investigación, reconocidas como ámbitos propios.</li>
+            </ul>
+          </div>
+          <div class="synth-col persists">
+            <p class="stitle">Lo que persiste</p>
+            <ul>
+              <li>Fragmentación jurisdiccional: cada provincia con su propia ley.</li>
+              <li>Tensión entre autonomía profesional (colegio) y control estatal (Secretaría de Salud).</li>
+            </ul>
+          </div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>15</span></div>
+      </div>
+    </section>
+
+    <!-- 13. BIBLIOGRAFIA -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <p class="kicker">Bibliografía</p>
+          <h2 class="title">Fuentes de la clase</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="biblio-list">
+          <div class="biblio-item">
+            <div class="bnum">1</div>
+            <div>
+              <h4>Ley de Ejercicio Profesional de la Psicología correspondiente a la jurisdicción</h4>
+              <p>Ley 10.306 (Provincia de Buenos Aires) / Ley 23.277 (Capital Federal, Tierra del Fuego, Antártida e Islas del Atlántico Sur), 1985.</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <div class="bnum">2</div>
+            <div>
+              <h4>Resolución Nº 2447/85, Ministerio de Educación y Cultura</h4>
+              <p>Incumbencias de los Títulos de Psicólogo y Licenciado en Psicología.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer"><span>Regulación del Ejercicio Profesional</span><span>16</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="controls">
+    <button id="prevBtn" aria-label="Anterior">‹</button>
+    <div class="dots" id="dots"></div>
+    <button id="nextBtn" aria-label="Siguiente">›</button>
+    <span class="counter"><span id="curNum">1</span> / <span id="totalNum"></span></span>
+  </div>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot-i' + (i === 0 ? ' on' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+  document.getElementById('totalNum').textContent = total;
+
+  function render(){
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    Array.from(dotsWrap.children).forEach((d, i) => d.classList.toggle('on', i === idx));
+    document.getElementById('curNum').textContent = idx + 1;
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('nextBtn').disabled = idx === total - 1;
+  }
+  function goTo(n){ idx = Math.max(0, Math.min(total - 1, n)); render(); }
+  function next(){ goTo(idx + 1); }
+  function prev(){ goTo(idx - 1); }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { goTo(0); }
+    else if (e.key === 'End') { goTo(total - 1); }
+  });
+
+  function scaleStage(){
+    const stage = document.getElementById('stage');
+    const availH = window.innerHeight - 70;
+    const availW = window.innerWidth - 40;
+    const scale = Math.min(availW / 1280, availH / 720);
+    stage.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', scaleStage);
+  scaleStage();
+  render();
+</script>
+</body>
+</html>
