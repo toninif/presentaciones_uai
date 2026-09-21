@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Competencias profesionales del psicólogo · Lectura en clase</title>
+<style>
+:root{--paper:#f5f7fb;--ink:#182d4c;--blue:#254fa3;--soft:#e6ecf7;--muted:#53647e;--accent:#ab385d;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Calibri,'Segoe UI',sans-serif}button,a,select{touch-action:manipulation}button,select{font:inherit}button,a{color:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.top{height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;background:var(--white);gap:16px;font-size:16px}.top span{color:var(--muted)}.top a{text-decoration:none}.slide{display:none;min-height:calc(100dvh - 132px);padding:4vh 7vw 3vh;flex-direction:column;justify-content:center;gap:22px}.slide.active{display:flex}.eyebrow{font-size:19px;color:var(--blue);margin:0}h1,h2,h3,p{margin:0}h1,h2{font-family:Cambria,Georgia,serif;font-weight:normal;line-height:1.08;letter-spacing:-.025em}h1{font-size:clamp(44px,5.6vw,82px);max-width:1100px}h2{font-size:clamp(36px,4vw,60px);max-width:1100px}h3{font-size:27px;margin-bottom:12px}p,li{font-size:clamp(23px,2.1vw,31px);line-height:1.35}.lead{font-size:clamp(27px,2.6vw,39px);max-width:1000px}.small{font-size:19px;line-height:1.4;color:var(--muted)}.source{font-size:17px;color:var(--muted);margin-top:8px}.source a{text-underline-offset:4px}ul,ol{margin:0;padding-left:1.15em}li+li{margin-top:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:5vw}.two>div{min-width:0}.prompt{padding:18px 24px;border-left:5px solid var(--accent);background:var(--soft);font-size:clamp(23px,2.1vw,30px);line-height:1.35}.prompt strong{color:var(--accent)}.cover{background:var(--ink);color:white}.cover .eyebrow,.cover .small,.cover .source{color:#c5d7fa}.cover .title-rule{width:110px;height:7px;background:#e18aac;margin-bottom:5px}.reading{background:var(--soft)}.reading .eyebrow{color:var(--accent)}.quote{font-family:Cambria,Georgia,serif;font-size:clamp(32px,3.3vw,48px);line-height:1.25;max-width:1060px;margin:0}.terms{display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px}.terms p{font-size:25px}.terms h3{border-top:3px solid var(--blue);padding-top:16px}.bigquestion{font-size:clamp(34px,4.4vw,64px);font-family:Cambria,Georgia,serif;max-width:1100px;line-height:1.15}table{border-collapse:collapse;width:100%;font-size:clamp(19px,1.8vw,27px);line-height:1.3}th,td{text-align:left;padding:13px 15px;border-bottom:1px solid #c5cfdf;vertical-align:top}th{color:var(--blue);font-weight:600;background:var(--soft)}td:not(:first-child){font-variant-numeric:tabular-nums}.data th:not(:first-child),.data td:not(:first-child){text-align:center}.data td:first-child{width:37%}details{font-size:21px}summary{cursor:pointer;color:var(--blue);font-weight:600}details p{font-size:23px;margin-top:10px;max-width:1050px}.nav{height:70px;background:white;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4vw;position:sticky;bottom:0;border-top:1px solid #d9e1ed}.nav button{border:1px solid #c4cfe0;border-radius:5px;background:white;padding:9px 15px;font-size:16px}.nav button:hover{background:var(--soft)}.nav button:disabled{opacity:.35;cursor:default}.nav .next{background:var(--blue);color:white;border-color:var(--blue)}.nav select{max-width:35vw;border:0;background:white;color:var(--ink);padding:8px;font-size:16px}.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--accent);transition:width .15s;z-index:5}.controls{display:flex;gap:8px;align-items:center}.counter{min-width:55px;text-align:center;font-size:16px}.all .slide{display:flex;min-height:720px;border-bottom:2px solid #c4cfe0}.all .nav{position:sticky}.all .progress{display:none}.all .slide:target{outline:3px solid var(--accent);outline-offset:-3px}.instruction{font-size:17px;color:var(--muted)}
+@media(min-width:1500px){.slide{padding-left:max(7vw,calc((100vw - 1350px)/2));padding-right:max(7vw,calc((100vw - 1350px)/2))}}
+@media(max-width:760px){.top{height:auto;min-height:58px;padding:12px 20px;font-size:14px}.top span{display:none}.slide{padding:30px 23px;min-height:calc(100dvh - 140px);gap:23px}.two,.terms{grid-template-columns:1fr;gap:24px}h1{font-size:46px}h2{font-size:37px}p,li,.terms p{font-size:23px}h3{font-size:25px}.nav{padding:8px 12px;height:auto;min-height:78px;flex-wrap:wrap}.nav select{max-width:48vw;font-size:14px}.nav button{font-size:14px;padding:9px}.nav .optional{display:none}table{font-size:17px}th,td{padding:10px 6px}.data{font-size:15px}.source{font-size:16px}.all .slide{min-height:0;padding-top:45px;padding-bottom:45px}}
+@media print{@page{size:A4 landscape;margin:12mm}.top,.nav,.progress,.instruction,summary{display:none!important}.slide,.all .slide{display:flex!important;min-height:0;height:180mm;padding:7mm 8mm;break-after:page;page-break-after:always;gap:6mm;background:white!important;color:var(--ink)!important;border:0}.slide:last-child{break-after:auto}.cover .eyebrow,.cover .small,.cover .source{color:var(--muted)}h1{font-size:42pt}h2{font-size:30pt}p,li,.lead,.terms p{font-size:18pt}.bigquestion{font-size:30pt}.quote{font-size:26pt}table{font-size:16pt}.small,.source{font-size:12pt}.prompt{font-size:18pt}details p{font-size:16pt}a{text-decoration:none}.two{gap:12mm}}
+@media(max-width:760px){table{table-layout:fixed;overflow-wrap:anywhere}.data th,.data td{font-size:14px;padding:9px 4px}.data th:first-child,.data td:first-child{width:34%}}
+.legend{display:flex;flex-wrap:wrap;gap:12px 30px;font-size:21px}.legend span{display:flex;align-items:center;gap:9px}.key{display:inline-block;width:14px;height:14px;border-radius:50%}.importance{background:var(--accent)}.perceived{background:var(--blue)}.chart{width:100%;padding-right:24px}.chart-row{display:grid;grid-template-columns:150px 1fr;gap:30px;align-items:center;margin-bottom:16px}.chart-label{font-size:24px}.plot{position:relative;height:48px;background:repeating-linear-gradient(to right,#c7d1e0 0,#c7d1e0 1px,transparent 1px,transparent 25%);border-right:1px solid #c7d1e0}.point{position:absolute;top:8px;transform:translateX(-50%);width:15px;height:15px;border-radius:50%}.point span{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:20px;font-weight:600;color:var(--ink)}.axis{display:flex;justify-content:space-between;font-size:18px;color:var(--muted);height:auto;background:none;border:0}.chart-unit{font-size:19px;color:var(--muted);margin-top:2px}.chart-row.axis-row{margin-bottom:0}.chart-row.axis-row .chart-label{font-size:18px;color:var(--muted)}
+@media(max-width:760px){.chart-row{grid-template-columns:76px 1fr;gap:14px}.chart-label{font-size:19px}.legend{font-size:17px}.point span{font-size:16px}.chart{padding-right:15px}.point{width:12px;height:12px}}
+@media print{.plot,.key,.point{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><a href="#1">Taller · Lectura de un artículo</a><span>Castro Solano / 2004</span><a href="2004%20Castro%20Solano%20-%20Competencias.pdf" target="_blank" rel="noopener">Abrir artículo ↗</a></header>
+<main>
+<section class="slide cover" id="1">
+<div class="title-rule"></div><p class="eyebrow">Alejandro Castro Solano · 2004</p>
+<h1>Las competencias profesionales del psicólogo</h1>
+<p class="lead">Formación, demandas institucionales y autopercepción de competencia</p>
+<p class="small">Una lectura guiada para discutir qué significa estar preparado para el ejercicio profesional.</p>
+<p class="source">Artículo: «Las competencias profesionales del psicólogo y las necesidades de perfiles profesionales en los diferentes ámbitos laborales». <em>Interdisciplinaria, 21</em>(2), 117–152.</p>
+</section>
+<section class="slide" id="2">
+<p class="eyebrow">Antes de leer</p><h2>¿Qué hace competente a un psicólogo?</h2>
+<p class="bigquestion">Una persona conoce muchas teorías psicológicas. ¿Qué más necesitaríamos saber para confiarle una tarea profesional?</p>
+<p class="source"><a data-page="122">El concepto de competencia, pp. 122–124 ↗</a></p>
+</section>
+<section class="slide" id="3">
+<h2>Recorrido de lectura</h2>
+<table><thead><tr><th>Tramo</th><th>Pregunta que orienta la lectura</th><th>Páginas</th></tr></thead><tbody>
+<tr><td>Problema y conceptos</td><td>¿Qué relación plantea entre formación y demandas?</td><td>119–124</td></tr>
+<tr><td>Método</td><td>¿A quiénes consulta y qué mide?</td><td>124–127</td></tr>
+<tr><td>Resultados y tablas</td><td>¿Dónde coinciden y discrepan las percepciones?</td><td>127–135, 138–143</td></tr>
+<tr><td>Discusión</td><td>¿Hasta dónde llegan las conclusiones?</td><td>135–137</td></tr>
+</tbody></table>
+<p class="source"><a data-page="119">Introducción ↗</a> · <a data-page="124">Método ↗</a> · <a data-page="127">Resultados ↗</a> · <a data-page="135">Discusión ↗</a></p>
+</section>
+<section class="slide reading" id="4">
+<h2>El problema que organiza el artículo</h2>
+<blockquote class="quote">«¿Las universidades están realmente formando y enseñando aquello que los usuarios del sistema necesitan?»</blockquote>
+<p class="source">Cita textual, p. 121. <a data-page="119">Leer introducción ↗</a></p>
+<p>El autor vincula las dificultades de inserción laboral con una formación predominantemente clínica y con la distancia entre teoría y práctica.</p>
+<div class="prompt">¿Quiénes representan las necesidades de la comunidad en este estudio?</div>
+</section>
+<section class="slide" id="5">
+<h2>El concepto de competencia</h2>
+<div class="two"><div><h3>Saber declarativo</h3><p>Conocer conceptos, modelos y explicaciones acerca de la realidad.</p></div><div><h3>Saber procedimental</h3><p>Utilizar conocimientos y destrezas para resolver problemas.</p></div></div>
+<p class="lead">La competencia integra saberes, experiencia y pericia en una situación profesional concreta.</p>
+<div class="prompt">Ejemplo para pensar: conocer teorías del aprendizaje y orientar a un equipo docente ante una dificultad escolar. ¿Qué exige la segunda tarea?</div>
+<p class="source"><a data-page="122">El concepto de competencia, pp. 122–124 ↗</a></p>
+</section>
+<section class="slide" id="6">
+<h2>Tres formas de hablar de competencias</h2>
+<div class="terms"><div><h3>Objetivas</h3><p>Observables y medibles en la conducta efectiva.</p></div><div><h3>Subjetivas</h3><p>Percibidas por la persona o atribuidas por otros.</p></div><div><h3>Institucionales</h3><p>Contrastables y certificables.</p></div></div>
+<div class="prompt"><strong>El estudio se concentra en percepciones.</strong> Sentirse capaz, recibir una valoración favorable y demostrar una habilidad son evidencias diferentes.</div>
+<p class="source">Clasificación de Prieto (1997), recuperada por Castro Solano, pp. 123–124. <a data-page="123">Leer clasificación y objetivos ↗</a></p>
+</section>
+<section class="slide" id="7">
+<h2>Objetivos y participantes</h2>
+<p>Analizar el ajuste entre competencias profesionales y necesidades de perfiles. Examinar fortalezas y debilidades percibidas.</p>
+<table><thead><tr><th>Participantes</th><th>Cantidad</th><th>Qué aportan</th></tr></thead><tbody>
+<tr><td>Psicólogos graduados</td><td>499</td><td>Autopercepción en distintas etapas profesionales</td></tr>
+<tr><td>Estudiantes próximos a graduarse</td><td>215</td><td>Autopercepción al finalizar la formación</td></tr>
+<tr><td>Empleadores / informantes clave</td><td>109</td><td>Demandas y valoración del psicólogo promedio</td></tr>
+</tbody></table>
+<p class="small">Empleadores: salud, 28; educación, 31; trabajo, 24; justicia, 26. El texto ubica a los encuestados en la Ciudad de Buenos Aires.</p>
+<p class="source">Método, pp. 124–125. <a data-page="124">Leer muestra ↗</a></p>
+</section>
+<section class="slide reading" id="8">
+<h2>Cómo se construye la evidencia</h2>
+<ol><li>Entrevistas semiestructuradas a empleadores sobre tareas y demandas.</li><li>Construcción de 57 ítems con entrevistas, incumbencias profesionales y un documento de la SIP.</li><li>Encuestas sobre competencia autopercibida e importancia de las habilidades.</li></ol>
+<div class="two"><div><h3>Forma A</h3><p>¿Cuán competente se percibe la persona en cada habilidad?</p></div><div><h3>Forma E</h3><p>¿Cuán importante es cada habilidad para el desempeño en el ámbito?</p></div></div>
+<p class="source"><a data-page="125">Leer instrumentos y procedimiento ↗</a> · Anexos: pp. 144–149.</p>
+</section>
+<section class="slide" id="9">
+<h2>Áreas de competencias y perfiles</h2>
+<div class="two"><div><h3>Áreas: agrupaciones de habilidades</h3><p>Clínica, escolar, laboral, investigación, evaluación y psicodiagnóstico, y «otras áreas».</p><p class="small">El análisis de componentes principales agrupa las respuestas a los ítems. El texto informa un 56 % de varianza explicada.</p></div><div><h3>Perfiles: agrupaciones de personas</h3><p>Clínico, escolar, laboral, investigador, baja competencia autopercibida y «áreas nuevas».</p><p class="small">El análisis de conglomerados reúne participantes con patrones de autopercepción similares.</p></div></div>
+<div class="prompt">¿Por qué un área de habilidades y un perfil de personas no son equivalentes?</div>
+<p class="source"><a data-page="127">Áreas y perfiles, pp. 127–128 ↗</a> · <a data-page="138">Tabla 1 ↗</a></p>
+</section>
+<section class="slide" id="10">
+<h2>Antigüedad e institución de egreso</h2>
+<ul><li>Las competencias clínicas distinguen a los grupos según años de graduación: los más antiguos se perciben más competentes en esa área.</li><li>Las diferencias vinculadas con instituciones públicas o privadas son reducidas en los análisis presentados.</li><li>Los estudiantes próximos a graduarse muestran baja autopercepción en numerosas áreas.</li></ul>
+<div class="prompt">Pregunta metodológica: ¿comparar personas con distinta antigüedad permite describir cómo cambia una misma persona a lo largo del tiempo?</div>
+<p class="source">Resultados y discusión, pp. 129–130 y 135–136. <a data-page="129">Leer comparaciones ↗</a></p>
+</section>
+<section class="slide" id="11">
+<h2>Cómo leer las tablas 2 a 5</h2>
+<table><thead><tr><th>Columna</th><th>Qué representa</th></tr></thead><tbody>
+<tr><td>Grado de importancia</td><td>Cuánto demanda el ámbito esa habilidad, según expertos.</td></tr>
+<tr><td>Percepción del experto</td><td>Cómo valora al psicólogo promedio que conoce.</td></tr>
+<tr><td>Perfil relacionado con el área</td><td>Autopercepción del grupo con ese perfil, cuando existe.</td></tr>
+<tr><td>Graduados y alumnos</td><td>Autopercepción según grupo de formación o antigüedad.</td></tr>
+</tbody></table>
+<p class="small">El autor define fortalezas y debilidades de manera relativa al promedio de cada grupo (±1 desvío estándar). No son un umbral externo de habilitación profesional.</p>
+<p class="source">Criterios de lectura, p. 130. <a data-page="130">Leer criterios ↗</a></p>
+</section>
+<section class="slide reading" id="12">
+<p class="eyebrow">Lectura de datos · Tabla 4, p. 142</p><h2>Un mismo ítem, distintas valoraciones</h2>
+<table class="data"><thead><tr><th>Área laboral</th><th>Importancia<br>según experto</th><th>Percepción<br>del experto</th><th>Autopercepción<br>perfil laboral</th></tr></thead><tbody>
+<tr><td>Redacción de informes psicológicos</td><td>4,75</td><td>3,75</td><td>4,37</td></tr>
+<tr><td>Elaboración de perfiles de puestos</td><td>4,75</td><td>3,75</td><td>3,76</td></tr>
+<tr><td>Selección y reclutamiento de personal</td><td>4,58</td><td>4,08</td><td>3,93</td></tr>
+</tbody></table>
+<p>En perfiles de puestos, las valoraciones de competencia casi coinciden. En informes, la autopercepción del perfil laboral supera la valoración experta.</p>
+<p class="small">Medias. Expertos: n = 24. Perfil laboral: n = 101. Los expertos valoran al psicólogo promedio, no a los mismos participantes que se autoevalúan.</p>
+<p class="source"><a data-page="142">Tabla 4, p. 142 ↗</a></p>
+</section>
+<section class="slide" id="13">
+<h2>Salud: demandas más allá de la consulta</h2>
+<table class="data"><thead><tr><th>Competencia</th><th>Importancia</th><th>Percepción experta</th><th>Autopercepción del perfil clínico</th></tr></thead><tbody>
+<tr><td>Trabajo interdisciplinario</td><td>5,00</td><td>3,55</td><td>4,51</td></tr>
+<tr><td>Intervención en crisis</td><td>4,73</td><td>3,45</td><td>4,16</td></tr>
+<tr><td>Tratamiento de adultos</td><td>4,73</td><td>4,36</td><td>4,51</td></tr>
+</tbody></table>
+<p>El trabajo interdisciplinario recibe la máxima importancia. La distancia entre las valoraciones de competencia es mayor allí que en el tratamiento de adultos.</p>
+<p class="small">Medias. Expertos: n = 28. Perfil clínico: n = 54.</p>
+<p class="source"><a data-page="139">Tabla 2, pp. 139–140 ↗</a> · <a data-page="131">Resultados de salud ↗</a></p>
+</section>
+<section class="slide" id="14">
+<h2>Educación: orientación y aprendizaje</h2>
+<table class="data"><thead><tr><th>Competencia</th><th>Importancia</th><th>Percepción experta</th><th>Autopercepción del perfil educativo</th></tr></thead><tbody>
+<tr><td>Orientación a docentes y directivos</td><td>4,81</td><td>3,77</td><td>3,42</td></tr>
+<tr><td>Teorías del aprendizaje</td><td>4,61</td><td>3,22</td><td>3,88</td></tr>
+<tr><td>Intervención con adolescentes</td><td>4,45</td><td>3,25</td><td>3,99</td></tr>
+</tbody></table>
+<p>La orientación a docentes encabeza las demandas. En teorías del aprendizaje e intervención con adolescentes, el perfil educativo se atribuye mayor competencia que la percibida por los expertos.</p>
+<p class="small">Medias. Expertos: n = 31. Perfil educativo: n = 131.</p>
+<p class="source"><a data-page="141">Tabla 3, p. 141 ↗</a> · <a data-page="132">Resultados de educación ↗</a></p>
+</section>
+<section class="slide" id="15">
+<h2>Trabajo: tareas específicas del ámbito</h2>
+<table class="data"><thead><tr><th>Competencia</th><th>Importancia</th><th>Percepción experta</th><th>Autopercepción del perfil laboral</th></tr></thead><tbody>
+<tr><td>Capacitación de personal</td><td>4,67</td><td>3,88</td><td>3,64</td></tr>
+<tr><td>Evaluación del desempeño</td><td>4,63</td><td>3,58</td><td>3,05</td></tr>
+<tr><td>Diagnóstico con pruebas proyectivas</td><td>4,33</td><td>3,96</td><td>4,54</td></tr>
+</tbody></table>
+<p>El perfil laboral se percibe más competente en pruebas proyectivas que en programas de evaluación del desempeño, aunque estos últimos reciben mayor importancia de los empleadores.</p>
+<p class="small">Medias. Expertos: n = 24. Perfil laboral: n = 101.</p>
+<p class="source"><a data-page="142">Tabla 4, p. 142 ↗</a> · <a data-page="133">Resultados del área laboral ↗</a></p>
+</section>
+<section class="slide" id="16">
+<h2>Justicia: una demanda sin perfil propio</h2>
+<table class="data"><thead><tr><th>Competencia</th><th>Importancia</th><th>Percepción experta</th><th>Autopercepción de alumnos</th></tr></thead><tbody>
+<tr><td>Trabajo interdisciplinario</td><td>4,69</td><td>3,56</td><td>3,11</td></tr>
+<tr><td>Realización de pericias</td><td>4,63</td><td>3,63</td><td>2,26</td></tr>
+<tr><td>Mediación</td><td>4,19</td><td>3,31</td><td>2,09</td></tr>
+</tbody></table>
+<p>Las pericias figuran entre las principales demandas. Los alumnos se perciben poco competentes en pericias y mediación. El análisis no identifica un perfil forense específico.</p>
+<p class="small">Medias. Expertos: n = 26. Alumnos: n = 215. La última columna corresponde a alumnos, no a un perfil forense.</p>
+<p class="source"><a data-page="143">Tabla 5, p. 143 ↗</a> · <a data-page="134">Resultados de justicia ↗</a></p>
+</section>
+<section class="slide" id="17">
+<h2>Competencias que atraviesan los ámbitos</h2>
+<div class="two"><div><h3>Intervención y comunicación</h3><ul><li>Trabajo interdisciplinario.</li><li>Intervención en crisis, con poblaciones de bajos recursos y en programas comunitarios.</li><li>Redacción de informes.</li></ul></div><div><h3>Investigación y herramientas</h3><ul><li>Investigaciones empíricas y metodología.</li><li>Comunicación mediante gráficos, tablas y estadísticas.</li><li>Informática básica e inglés.</li></ul></div></div>
+<p class="source">Competencias genéricas y específicas, pp. 134–135. <a data-page="135">Leer factor genérico ↗</a></p>
+</section>
+<section class="slide reading" id="18">
+<p class="eyebrow">Trabajo en grupos · Tablas 2–5</p><h2>Una lectura comparada por ámbito</h2>
+<p>Cada grupo elige salud, educación, trabajo o justicia.</p>
+<ol><li>Seleccionen una competencia muy valorada por los expertos.</li><li>Comparen su importancia, la percepción experta y dos grupos de participantes.</li><li>Formulen una conclusión e indiquen algo que la tabla no permite saber.</li></ol>
+<div class="prompt">Puesta en común: «En el ámbito de…, la tabla muestra… Esto sugiere…, pero para afirmar… necesitaríamos…».</div>
+<p class="source"><a data-page="139">Salud ↗</a> · <a data-page="141">Educación ↗</a> · <a data-page="142">Trabajo ↗</a> · <a data-page="143">Justicia ↗</a></p>
+</section>
+<section class="slide reading" id="19">
+<h2>Las conclusiones y sus alcances</h2>
+<div class="two"><div><h3>La interpretación del autor</h3><p>Existe un pobre ajuste entre las demandas institucionales y la formación de los psicólogos, con predominio de competencias clínicas clásicas.</p></div><div><h3>El límite que reconoce</h3><p>El trabajo releva percepciones. El autor propone que futuras investigaciones evalúen objetivamente las competencias.</p></div></div>
+<div class="prompt">¿Qué evidencia permitiría evaluar el impacto de la formación sobre el desempeño profesional?</div>
+<p class="source"><a data-page="135">Discusión, pp. 135–137 ↗</a></p>
+</section>
+<section class="slide" id="20">
+<h2>Preguntas para una lectura crítica</h2>
+<ul><li><strong>Representación:</strong> ¿las demandas de empleadores representan todas las necesidades de la comunidad?</li><li><strong>Medición:</strong> ¿qué relación hay entre confianza, valoración ajena y desempeño?</li><li><strong>Comparación:</strong> ¿las diferencias de antigüedad se deben a experiencia, formación o cohortes?</li><li><strong>Alcance:</strong> ¿qué datos harían falta para extender estas conclusiones a otros lugares y al presente?</li></ul>
+<p class="source"><a data-page="124">Método ↗</a> · <a data-page="137">Alcances del estudio ↗</a></p>
+</section>
+<section class="slide" id="21">
+<h2>Informes: una demanda compartida</h2>
+<p>Importancia de la redacción de informes y valoración experta de la competencia del psicólogo promedio.</p>
+<div class="legend"><span><i class="key importance"></i>Importancia</span><span><i class="key perceived"></i>Competencia percibida por expertos</span></div>
+<div class="chart" id="reports-chart" role="img" aria-label="Medias por ámbito. Salud: importancia 4,73 y competencia 3,55. Educación: 4,71 y 3,51. Trabajo: 4,75 y 3,75. Justicia: 4,50 y 4,06. Escala de 1 a 5."></div>
+<p>La importancia supera la valoración de competencia en los cuatro ámbitos. La menor distancia se observa en justicia.</p>
+<p class="source"><a data-page="139">Salud, Tabla 2 ↗</a> · <a data-page="141">Educación, Tabla 3 ↗</a> · <a data-page="142">Trabajo, Tabla 4 ↗</a> · <a data-page="143">Justicia, Tabla 5 ↗</a></p>
+</section>
+<section class="slide cover" id="22">
+<p class="eyebrow">Cierre de la lectura</p><h2>¿Qué cambió en nuestra idea de estar preparados?</h2>
+<p class="lead">La competencia articula conocimientos y experiencia frente a demandas concretas.</p>
+<p>El artículo muestra diferencias entre lo que las instituciones consideran importante y las competencias que distintos actores perciben.</p>
+<p>La evaluación del desempeño queda como un paso necesario para profundizar esos resultados.</p>
+<p class="source">Castro Solano, A. (2004). Las competencias profesionales del psicólogo y las necesidades de perfiles profesionales en los diferentes ámbitos laborales. <em>Interdisciplinaria, 21</em>(2), 117–152.</p>
+</section>
+</main>
+<nav class="nav" aria-label="Controles de presentación"><select id="index" aria-label="Ir a diapositiva"></select><div class="controls"><button id="all" class="optional" title="Ver todas las diapositivas (V)" aria-pressed="false">Ver todas</button><button id="full" class="optional" title="Pantalla completa (F)">Pantalla completa</button><button id="prev" aria-label="Diapositiva anterior">←</button><span class="counter" id="counter" aria-live="polite"></span><button id="next" class="next" aria-label="Diapositiva siguiente">→</button></div></nav>
+<div class="progress" id="progress"></div>
+<script>
+'use strict';
+// Place the cross-field comparison immediately after the four field tables.
+const reportSlide=document.getElementById('21');
+reportSlide.parentElement.insertBefore(reportSlide,document.getElementById('17'));
+document.querySelectorAll('.slide').forEach((slide,i)=>{slide.id=String(i+1)});
+const reportData=[['Salud',4.73,3.55],['Educación',4.71,3.51],['Trabajo',4.75,3.75],['Justicia',4.50,4.06]];
+const chart=document.getElementById('reports-chart');
+reportData.forEach(([label,importance,perceived])=>{
+ const row=document.createElement('div');row.className='chart-row';
+ const name=document.createElement('div');name.className='chart-label';name.textContent=label;row.append(name);
+ const plot=document.createElement('div');plot.className='plot';
+ [[importance,'importance'],[perceived,'perceived']].forEach(([value,kind])=>{const point=document.createElement('div');point.className='point '+kind;point.style.left=((value-1)/4*100)+'%';const number=document.createElement('span');number.textContent=value.toFixed(2).replace('.',',');point.append(number);plot.append(point)});
+ row.append(plot);chart.append(row);
+});
+const axis=document.createElement('div');axis.className='chart-row axis-row';axis.innerHTML='<div class="chart-label">Media (1–5)</div><div class="axis"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>';chart.append(axis);
+const slides=[...document.querySelectorAll('.slide')], picker=document.getElementById('index');
+let current=0, all=false;
+slides.forEach((slide,i)=>{const option=document.createElement('option');option.value=i;option.textContent=(i+1)+'. '+slide.querySelector('h1,h2').textContent;picker.append(option)});
+document.querySelectorAll('[data-page]').forEach(a=>{a.href='2004%20Castro%20Solano%20-%20Competencias.pdf#page='+(Number(a.dataset.page)-115);a.target='_blank';a.rel='noopener'});
+function show(n,update=true){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((slide,i)=>{slide.classList.toggle('active',i===current);slide.setAttribute('aria-hidden',String(!all&&i!==current))});picker.value=current;document.getElementById('counter').textContent=(current+1)+' / '+slides.length;document.getElementById('prev').disabled=current===0;document.getElementById('next').disabled=current===slides.length-1;document.getElementById('progress').style.width=((current+1)/slides.length*100)+'%';document.title=(current+1)+' · '+slides[current].querySelector('h1,h2').textContent;if(update)history.replaceState(null,'','#'+(current+1));if(all)slides[current].scrollIntoView({block:'start'});else window.scrollTo(0,0)}
+function fromHash(){const n=Number(location.hash.slice(1));show(Number.isFinite(n)&&n>0?n-1:0,false)}
+document.getElementById('prev').onclick=()=>show(current-1);document.getElementById('next').onclick=()=>show(current+1);picker.onchange=()=>show(Number(picker.value));
+function toggleAll(){all=!all;document.body.classList.toggle('all',all);const b=document.getElementById('all');b.textContent=all?'Presentar':'Ver todas';b.setAttribute('aria-pressed',String(all));show(current)}
+async function fullscreen(){try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch{document.getElementById('full').textContent='Usá F11'}}
+document.getElementById('all').onclick=toggleAll;document.getElementById('full').onclick=fullscreen;
+document.addEventListener('fullscreenchange',()=>{document.getElementById('full').textContent=document.fullscreenElement?'Salir de pantalla completa':'Pantalla completa'});
+document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.target.closest('button,summary,a')&&(e.key===' '||e.key==='Enter'))return;if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)}else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)}else if(e.key==='Home'){e.preventDefault();show(0)}else if(e.key==='End'){e.preventDefault();show(slides.length-1)}else if(e.key.toLowerCase()==='f')fullscreen();else if(e.key.toLowerCase()==='v')toggleAll()});
+window.addEventListener('hashchange',fromHash);fromHash();
+</script>
+</body>
+</html>
